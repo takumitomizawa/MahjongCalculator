@@ -1,19 +1,14 @@
 package jp.techacademy.mahjongcalculator
 
 import android.content.Intent
-import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.service.quicksettings.Tile
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.RecyclerListener
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import jp.techacademy.mahjongcalculator.databinding.ActivityMainBinding
 
@@ -67,48 +62,31 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun getTiles(tileType: String): List<Int> {
-        val tileList = mutableListOf<Int>()
+    private fun getTiles(tileType: String): List<MahjongTile> {
+        val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
 
         // 1-9までの牌を取得する
         for (i in 1..9) {
             val resourceName = resourcePrefix + tileType + "_" + i.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-            tileList.add(resourceId)
+            val tile = MahjongTile(tileType, i, resourceId)
+            tileList.add(tile)
         }
         return tileList
     }
 
-    private fun getTilesHand(tileType: String): List<Int> {
-        val tileList = mutableListOf<Int>()
+    private fun getTilesHand(tileType: String): List<MahjongTile> {
+        val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
 
         // 1-9までの牌を取得する
         for (i in 1..14) {
             val resourceName = resourcePrefix + tileType + "_" + i.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-            tileList.add(resourceId)
+            val tile = MahjongTile(tileType, i, resourceId)
+            tileList.add(tile)
         }
         return tileList
-    }
-
-    private inner class TileAdapter(private val tileList: List<Int>) :
-        RecyclerView.Adapter<TileAdapter.TileViewHolder>() {
-
-        override fun onBindViewHolder(holder: TileViewHolder, position: Int) {
-            val tileImage = holder.itemView.findViewById<ImageView>(R.id.imageViewTile)
-            tileImage.setImageResource(tileList[position])
-        }
-
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
-            val itemView =
-                LayoutInflater.from(parent.context).inflate(R.layout.item_tile, parent, false)
-            return TileViewHolder(itemView)
-        }
-
-        override fun getItemCount() = tileList.size
-
-        inner class TileViewHolder(itemView: View) : ViewHolder(itemView)
     }
 }
