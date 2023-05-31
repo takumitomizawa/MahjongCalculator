@@ -66,13 +66,102 @@
         />
 
     <Button
+        android:id="@+id/resetButton"
+        android:text="リセット"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginStart="0dp"
-        app:layout_constraintTop_toBottomOf="@+id/recyclerViewHand"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewManzu"
         app:layout_constraintStart_toEndOf="@id/recyclerViewManzu"
-        app:layout_constraintEnd_toEndOf="parent"
+        />
+
+    <Button
+        android:id="@+id/syuntsuButton"
+        android:text="順子"
+        android:layout_width="wrap_content"
+        android:layout_height="65dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/resetButton"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
+        />
+
+    <Button
+        android:id="@+id/koutsuButton"
+        android:text="刻子"
+        android:layout_width="wrap_content"
+        android:layout_height="65dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/syuntsuButton"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
+        />
+
+    <Button
+        android:id="@+id/titoitsuButton"
+        android:text="七対子"
+        android:layout_width="wrap_content"
+        android:layout_height="65dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/koutsuButton"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
+        />
+
+    <Button
+        android:id="@+id/ponButton"
+        android:text="ポン"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="160dp"
+        app:layout_constraintTop_toTopOf="@+id/recyclerViewManzu"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewManzu"
+        />
+
+    <Button
+        android:id="@+id/tiButton"
+        android:text="チー"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="160dp"
+        app:layout_constraintTop_toBottomOf="@+id/ponButton"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
+        />
+
+    <Button
+        android:id="@+id/minkanButton"
+        android:text="明槓"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="160dp"
+        app:layout_constraintTop_toBottomOf="@+id/tiButton"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
+        />
+
+    <Button
+        android:id="@+id/ankanButton"
+        android:text="暗槓"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="160dp"
+        app:layout_constraintTop_toBottomOf="@+id/minkanButton"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
+        />
+
+    <Button
+        android:id="@+id/nextButton"
+        android:text="次へ"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="160dp"
+        app:layout_constraintTop_toBottomOf="@+id/ankanButton"
+        app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,5 +1,6 @@
 package jp.techacademy.mahjongcalculator
 
+import android.content.Intent
 import android.content.res.Resources
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -59,6 +60,11 @@ class MainActivity : AppCompatActivity() {
         recyclerViewPinzu.adapter = pinzuAdapter
         recyclerViewSouzu.adapter = souzuAdapter
         recyclerViewJi.adapter = jiAdapter
+
+        binding.nextButton.setOnClickListener{
+            val intent = Intent(this, SettingActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     private fun getTiles(tileType: String): List<Int> {
