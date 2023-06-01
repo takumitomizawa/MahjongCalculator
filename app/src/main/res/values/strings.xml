@@ -1,4 +1,9 @@
 <resources>
     <string name="app_name">MahjongCalculator</string>
     <string name="title_image_description">test</string>
+    // メイン画面
+    <string name="main_key_manzu">manzu</string>
+    <string name="main_key_pinzu">pinzu</string>
+    <string name="main_key_souzu">souzu</string>
+    <string name="main_key_ji">ji</string>
 </resources>

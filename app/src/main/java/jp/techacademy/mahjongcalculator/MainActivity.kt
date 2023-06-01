@@ -51,10 +51,10 @@ class MainActivity : AppCompatActivity() {
         recyclerViewJi.layoutManager = GridLayoutManager(this, 9)
 
         handAdapter = TileAdapter(selectedTiles)
-        manzuAdapter = TileAdapter(getTiles("manzu"))
-        pinzuAdapter = TileAdapter(getTiles("pinzu"))
-        souzuAdapter = TileAdapter(getTiles("souzu"))
-        jiAdapter = TileAdapter(getTiles("ji"))
+        manzuAdapter = TileAdapter(getTiles(getString(R.string.main_key_manzu)))
+        pinzuAdapter = TileAdapter(getTiles(getString(R.string.main_key_pinzu)))
+        souzuAdapter = TileAdapter(getTiles(getString(R.string.main_key_souzu)))
+        jiAdapter = TileAdapter(getTiles(getString(R.string.main_key_ji)))
 
         recyclerViewHand.adapter = handAdapter
         recyclerViewManzu.adapter = manzuAdapter
@@ -64,28 +64,38 @@ class MainActivity : AppCompatActivity() {
 
         manzuAdapter.setOnTileClickListener { tile ->
             if (isSyuntsuButtonPressed) {
-                Log.d("test", "連続処理通過")
                 val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-                val selectedTilesSet = selectedTiles.toSet()
-
-                selectedTiles.addAll(tilesToAddForTappedTile.filter { it !in selectedTilesSet })
+                selectedTiles.addAll(tilesToAddForTappedTile)
                 handAdapter.notifyDataSetChanged()
 
             } else {
-                Log.d("test", "単一処理通過")
                 selectedTiles.add(tile)
                 handAdapter.notifyDataSetChanged()
             }
         }
 
         pinzuAdapter.setOnTileClickListener { tile ->
-            selectedTiles.add(tile)
-            handAdapter.notifyDataSetChanged()
+            if (isSyuntsuButtonPressed) {
+                val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+                selectedTiles.addAll(tilesToAddForTappedTile)
+                handAdapter.notifyDataSetChanged()
+
+            } else {
+                selectedTiles.add(tile)
+                handAdapter.notifyDataSetChanged()
+            }
         }
 
         souzuAdapter.setOnTileClickListener { tile ->
-            selectedTiles.add(tile)
-            handAdapter.notifyDataSetChanged()
+            if (isSyuntsuButtonPressed) {
+                val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+                selectedTiles.addAll(tilesToAddForTappedTile)
+                handAdapter.notifyDataSetChanged()
+
+            } else {
+                selectedTiles.add(tile)
+                handAdapter.notifyDataSetChanged()
+            }
         }
 
         jiAdapter.setOnTileClickListener { tile ->
@@ -108,13 +118,17 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun clearSyuntsuButtonState() {
-        isSyuntsuButtonPressed = false
-        manzuAdapter.setOnTileClickListener { tile ->
+    /*private fun SyuntsuButtonState() { tile ->
+        if (isSyuntsuButtonPressed) {
+            val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+            selectedTiles.addAll(tilesToAddForTappedTile)
+            handAdapter.notifyDataSetChanged()
+
+        } else {
             selectedTiles.add(tile)
             handAdapter.notifyDataSetChanged()
         }
-    }
+    }*/
 
     private fun getTiles(tileType: String): List<MahjongTile> {
         val tileList = mutableListOf<MahjongTile>()
@@ -145,12 +159,13 @@ class MainActivity : AppCompatActivity() {
                 tileList.add(tile)
             }
 
-            clearSyuntsuButtonState()
         } else {
             val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
             val tile = MahjongTile(tileType, tileNumber, resourceId)
             tileList.add(tile)
+
+            selectedTiles.add(tile)
         }
 
         return tileList
