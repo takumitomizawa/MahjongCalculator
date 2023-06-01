@@ -3,6 +3,7 @@ package jp.techacademy.mahjongcalculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -63,6 +64,7 @@ class MainActivity : AppCompatActivity() {
 
         manzuAdapter.setOnTileClickListener { tile ->
             if (isSyuntsuButtonPressed) {
+                Log.d("test", "連続処理通過")
                 val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
                 val selectedTilesSet = selectedTiles.toSet()
 
@@ -70,6 +72,7 @@ class MainActivity : AppCompatActivity() {
                 handAdapter.notifyDataSetChanged()
 
             } else {
+                Log.d("test", "単一処理通過")
                 selectedTiles.add(tile)
                 handAdapter.notifyDataSetChanged()
             }
@@ -101,7 +104,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.syuntsuButton.setOnClickListener {
-            isSyuntsuButtonPressed = true
+            isSyuntsuButtonPressed = !isSyuntsuButtonPressed
         }
     }
 
