@@ -97,16 +97,16 @@ class MainActivity : AppCompatActivity() {
                 val tileNumber = tile.number
 
                 if (tileType != "ji"){
-                    val tilesToAdd = getSequentialTiles(tileType, tileNumber)
 
                     manzuAdapter.setOnTileClickListener { tappedTile ->
-                        val tilesToAdd = getSequentialTiles(tappedTile.tileType, tappedTile.number)
+                        val tilesToAddForTappedTile = getSequentialTiles(tappedTile.tileType, tappedTile.number)
                         val selectedTilesSet = selectedTiles.toSet()
 
 
-                        selectedTiles.addAll(tilesToAdd.filter { it !in selectedTilesSet })
+                        selectedTiles.addAll(tilesToAddForTappedTile.filter { it !in selectedTilesSet })
                         selectedTiles.add(tappedTile)
                         handAdapter.notifyDataSetChanged()
+
                     }
                 }
             }
@@ -132,7 +132,7 @@ class MainActivity : AppCompatActivity() {
         val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
 
-        val startNumber = tileNumber - 1
+        val startNumber = tileNumber + 0
         val endNumber = tileNumber + 2
 
         for (i in startNumber .. endNumber){
