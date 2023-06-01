@@ -94,7 +94,6 @@ class MainActivity : AppCompatActivity() {
             if (selectedTiles.size == 1){
                 val tile = selectedTiles[0]
                 val tileType = tile.tileType
-                val tileNumber = tile.number
 
                 if (tileType != "ji"){
 
@@ -102,6 +101,7 @@ class MainActivity : AppCompatActivity() {
                         val tilesToAddForTappedTile = getSequentialTiles(tappedTile.tileType, tappedTile.number)
                         val selectedTilesSet = selectedTiles.toSet()
 
+                        selectedTiles.remove(tile)
 
                         selectedTiles.addAll(tilesToAddForTappedTile.filter { it !in selectedTilesSet })
                         selectedTiles.add(tappedTile)
@@ -131,6 +131,7 @@ class MainActivity : AppCompatActivity() {
     private fun getSequentialTiles(tileType: String, tileNumber: Int): List<MahjongTile>{
         val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
+
 
         val startNumber = tileNumber + 0
         val endNumber = tileNumber + 2
