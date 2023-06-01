@@ -79,10 +79,32 @@ class MainActivity : AppCompatActivity() {
             handAdapter.notifyDataSetChanged()
         }
 
+        binding.resetButton.setOnClickListener{
+            selectedTiles.clear()
+            handAdapter.notifyDataSetChanged()
+        }
+
         binding.nextButton.setOnClickListener{
             val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
+
+        binding.syuntsuButton.setOnClickListener{
+            val selectedTiles = selectedTiles.toList()
+            if (selectedTiles.size == 1){
+                val tile = selectedTiles[0]
+                val tileType = tile.tileType
+                val tileNumber = tile.number
+
+                if (tileType != "ji"){
+                    val tilesToAdd = getSequentialTiles(tileType, tileNumber)
+                    selectedTiles.addAll(tilesToAdd)
+
+                    handAdapter.notifyDataSetChanged()
+                }
+            }
+        }
+
     }
 
     private fun getTiles(tileType: String): List<MahjongTile> {
@@ -96,6 +118,23 @@ class MainActivity : AppCompatActivity() {
             val tile = MahjongTile(tileType, i, resourceId)
             tileList.add(tile)
         }
+        return tileList
+    }
+
+    private fun getSequentialTiles(tileType: String, tileNumber: Int): List<MahjongTile>{
+        val tileList = mutableListOf<MahjongTile>()
+        val resourcePrefix = "tiles_"
+
+        val startNumber = tileNumber - 1
+        val endNumber = tileNumber + 2
+
+        for (i in startNumber .. endNumber){
+            val resourceName = resourcePrefix + tileType + "_" + i.toString()
+            val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+            val tile = MahjongTile(tileType, i, resourceId)
+            tileList.add(tile)
+        }
+
         return tileList
     }
 }

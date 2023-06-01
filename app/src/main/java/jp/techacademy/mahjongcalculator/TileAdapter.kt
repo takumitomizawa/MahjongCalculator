@@ -7,8 +7,9 @@ import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
 
 
-class TileAdapter(private val tileList: List<MahjongTile>) :
-    RecyclerView.Adapter<TileAdapter.TileViewHolder>() {
+class TileAdapter(
+    private val tileList: List<MahjongTile>
+) : RecyclerView.Adapter<TileAdapter.TileViewHolder>() {
 
     private var onTileClickListener: ((MahjongTile) -> Unit)? = null
 
@@ -16,9 +17,13 @@ class TileAdapter(private val tileList: List<MahjongTile>) :
         onTileClickListener = listener
     }
 
+    /*fun clearData(){
+        tileList.clear()
+        notifyDataSetChanged()
+    }*/
+
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) {
-        val tileImage = holder.itemView.findViewById<ImageView>(R.id.imageViewTile)
-        tileImage.setImageResource(tileList[position].imageResourceId)
+        holder.tileImageView.setImageResource(tileList[position].imageResourceId)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
@@ -30,13 +35,13 @@ class TileAdapter(private val tileList: List<MahjongTile>) :
     override fun getItemCount() = tileList.size
 
     inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
-        val tileImageView: ImageView = itemView.findViewById(R.id.tileImageView)
+        val tileImageView: ImageView = itemView.findViewById(R.id.imageViewTile)
 
         init {
             tileImageView.setOnClickListener{
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION){
-                    val tile = tiles[position]
+                    val tile = tileList[position]
                     onTileClickListener?.invoke(tile)
                 }
             }
