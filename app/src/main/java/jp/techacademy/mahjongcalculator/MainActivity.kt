@@ -90,16 +90,15 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.syuntsuButton.setOnClickListener{
-            val selectedTiles = selectedTiles.toList()
-            if (selectedTiles.size == 1){
-                val tile = selectedTiles[0]
+            val currentTiles = selectedTiles.toList()
+            if (currentTiles.size == 1){
+                val tile = currentTiles[0]
                 val tileType = tile.tileType
                 val tileNumber = tile.number
 
                 if (tileType != "ji"){
                     val tilesToAdd = getSequentialTiles(tileType, tileNumber)
                     selectedTiles.addAll(tilesToAdd)
-
                     handAdapter.notifyDataSetChanged()
                 }
             }
