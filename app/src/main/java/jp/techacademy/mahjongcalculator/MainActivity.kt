@@ -30,6 +30,8 @@ class MainActivity : AppCompatActivity() {
 
     private val selectedTiles = mutableListOf<MahjongTile>()
 
+    private var isSyuntsuButtonPressed = false
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
@@ -79,19 +81,20 @@ class MainActivity : AppCompatActivity() {
             handAdapter.notifyDataSetChanged()
         }
 
-        binding.resetButton.setOnClickListener{
+        binding.resetButton.setOnClickListener {
             selectedTiles.clear()
             handAdapter.notifyDataSetChanged()
         }
 
-        binding.nextButton.setOnClickListener{
+        binding.nextButton.setOnClickListener {
             val intent = Intent(this, SettingActivity::class.java)
             startActivity(intent)
         }
 
-        binding.syuntsuButton.setOnClickListener{
+        binding.syuntsuButton.setOnClickListener {
+            isSyuntsuButtonPressed = true
             //val currentTiles = selectedTiles.toList()
-            if (selectedTiles.size == 1){
+            /*if (selectedTiles.size == 1){
                 val tile = selectedTiles[0]
                 val tileType = tile.tileType
 
@@ -109,9 +112,16 @@ class MainActivity : AppCompatActivity() {
 
                     }
                 }
-            }
+            }*/
         }
+    }
 
+    private fun clearSyuntsuButtonState() {
+        isSyuntsuButtonPressed = false
+        manzuAdapter.setOnTileClickListener { tile ->
+            selectedTiles.add(tile)
+            handAdapter.notifyDataSetChanged()
+        }
     }
 
     private fun getTiles(tileType: String): List<MahjongTile> {
@@ -128,18 +138,26 @@ class MainActivity : AppCompatActivity() {
         return tileList
     }
 
-    private fun getSequentialTiles(tileType: String, tileNumber: Int): List<MahjongTile>{
+    private fun getSequentialTiles(tileType: String, tileNumber: Int): List<MahjongTile> {
         val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
 
+        if (isSyuntsuButtonPressed){
+            val startNumber = tileNumber
+            val endNumber = tileNumber + 2
 
-        val startNumber = tileNumber + 0
-        val endNumber = tileNumber + 2
+            for (i in startNumber..endNumber) {
+                val resourceName = resourcePrefix + tileType + "_" + i.toString()
+                val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+                val tile = MahjongTile(tileType, i, resourceId)
+                tileList.add(tile)
+            }
 
-        for (i in startNumber .. endNumber){
-            val resourceName = resourcePrefix + tileType + "_" + i.toString()
+            clearSyuntsuButtonState()
+        }else{
+            val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-            val tile = MahjongTile(tileType, i, resourceId)
+            val tile = MahjongTile(tileType, tileNumber, resourceId)
             tileList.add(tile)
         }
 
