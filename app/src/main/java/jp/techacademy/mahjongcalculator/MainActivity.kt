@@ -62,8 +62,17 @@ class MainActivity : AppCompatActivity() {
         recyclerViewJi.adapter = jiAdapter
 
         manzuAdapter.setOnTileClickListener { tile ->
-            selectedTiles.add(tile)
-            handAdapter.notifyDataSetChanged()
+            if (isSyuntsuButtonPressed) {
+                val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+                val selectedTilesSet = selectedTiles.toSet()
+
+                selectedTiles.addAll(tilesToAddForTappedTile.filter { it !in selectedTilesSet })
+                handAdapter.notifyDataSetChanged()
+
+            } else {
+                selectedTiles.add(tile)
+                handAdapter.notifyDataSetChanged()
+            }
         }
 
         pinzuAdapter.setOnTileClickListener { tile ->
@@ -93,26 +102,6 @@ class MainActivity : AppCompatActivity() {
 
         binding.syuntsuButton.setOnClickListener {
             isSyuntsuButtonPressed = true
-            //val currentTiles = selectedTiles.toList()
-            /*if (selectedTiles.size == 1){
-                val tile = selectedTiles[0]
-                val tileType = tile.tileType
-
-                if (tileType != "ji"){
-
-                    manzuAdapter.setOnTileClickListener { tappedTile ->
-                        val tilesToAddForTappedTile = getSequentialTiles(tappedTile.tileType, tappedTile.number)
-                        val selectedTilesSet = selectedTiles.toSet()
-
-                        selectedTiles.remove(tile)
-
-                        selectedTiles.addAll(tilesToAddForTappedTile.filter { it !in selectedTilesSet })
-                        selectedTiles.add(tappedTile)
-                        handAdapter.notifyDataSetChanged()
-
-                    }
-                }
-            }*/
         }
     }
 
@@ -142,7 +131,7 @@ class MainActivity : AppCompatActivity() {
         val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
 
-        if (isSyuntsuButtonPressed){
+        if (isSyuntsuButtonPressed) {
             val startNumber = tileNumber
             val endNumber = tileNumber + 2
 
@@ -154,7 +143,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             clearSyuntsuButtonState()
-        }else{
+        } else {
             val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
             val tile = MahjongTile(tileType, tileNumber, resourceId)
