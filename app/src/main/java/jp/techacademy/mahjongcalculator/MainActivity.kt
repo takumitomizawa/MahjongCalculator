@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
 
     private var isSyuntsuButtonPressed = false
     private var isKoutsuButtonPressed = false
+    private var isTitoitsuButtonPressed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -69,6 +70,8 @@ class MainActivity : AppCompatActivity() {
                 SyuntsuButtonState(tile)
             } else if (isKoutsuButtonPressed) {
                 KoutsuButtonState(tile)
+            } else if (isTitoitsuButtonPressed) {
+                TitoitsuButtonState(tile)
             }
         }
 
@@ -77,6 +80,8 @@ class MainActivity : AppCompatActivity() {
                 SyuntsuButtonState(tile)
             } else if (isKoutsuButtonPressed) {
                 KoutsuButtonState(tile)
+            } else if (isTitoitsuButtonPressed) {
+                TitoitsuButtonState(tile)
             }
         }
 
@@ -85,20 +90,24 @@ class MainActivity : AppCompatActivity() {
                 SyuntsuButtonState(tile)
             } else if (isKoutsuButtonPressed) {
                 KoutsuButtonState(tile)
+            } else if (isTitoitsuButtonPressed) {
+                TitoitsuButtonState(tile)
             }
         }
 
         jiAdapter.setOnTileClickListener { tile ->
             if (isKoutsuButtonPressed) {
                 KoutsuButtonState(tile)
+            } else if (isTitoitsuButtonPressed) {
+                TitoitsuButtonState(tile)
             }
-            handAdapter.notifyDataSetChanged()
         }
 
         binding.resetButton.setOnClickListener {
             selectedTiles.clear()
             isSyuntsuButtonPressed = false
             isKoutsuButtonPressed = false
+            isTitoitsuButtonPressed = false
             handAdapter.notifyDataSetChanged()
         }
 
@@ -116,6 +125,10 @@ class MainActivity : AppCompatActivity() {
             // 刻子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
             isKoutsuButtonPressed = !isKoutsuButtonPressed
         }
+
+        binding.titoitsuButton.setOnClickListener{
+            isTitoitsuButtonPressed = !isTitoitsuButtonPressed
+        }
     }
 
     private fun SyuntsuButtonState(tile: MahjongTile) {
@@ -132,6 +145,18 @@ class MainActivity : AppCompatActivity() {
 
     private fun KoutsuButtonState(tile: MahjongTile) {
         if (isKoutsuButtonPressed) {
+            val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+            selectedTiles.addAll(tilesToAddForTappedTile)
+            handAdapter.notifyDataSetChanged()
+
+        } else {
+            selectedTiles.add(tile)
+            handAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun TitoitsuButtonState(tile: MahjongTile) {
+        if (isTitoitsuButtonPressed) {
             val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
             selectedTiles.addAll(tilesToAddForTappedTile)
             handAdapter.notifyDataSetChanged()
@@ -160,7 +185,7 @@ class MainActivity : AppCompatActivity() {
         val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
 
-        if (isSyuntsuButtonPressed) {
+        if (isSyuntsuButtonPressed && tileNumber < 8) {
             val startNumber = tileNumber
             val endNumber = tileNumber + 2
 
@@ -180,14 +205,23 @@ class MainActivity : AppCompatActivity() {
                 val tile = MahjongTile(tileType, selectNumber, resourceId)
                 tileList.add(tile)
             }
-        } else {
+        } else if (isTitoitsuButtonPressed) {
+            val selectNumber = tileNumber
+
+            for (i in 0..1) {
+                val resourceName = resourcePrefix + tileType + "_" + selectNumber.toString()
+                val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+                val tile = MahjongTile(tileType, selectNumber, resourceId)
+                tileList.add(tile)
+            }
+        } /*else {
             val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
             val tile = MahjongTile(tileType, tileNumber, resourceId)
             tileList.add(tile)
 
             selectedTiles.add(tile)
-        }
+        }*/
 
         return tileList
     }
