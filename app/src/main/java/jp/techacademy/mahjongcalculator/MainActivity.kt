@@ -3,15 +3,9 @@ package jp.techacademy.mahjongcalculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.Toast
+import android.widget.CompoundButton
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import jp.techacademy.mahjongcalculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
@@ -104,10 +98,10 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.resetButton.setOnClickListener {
+            binding.syuntsuButton.isChecked = false
+            binding.koutsuButton.isChecked = false
+            binding.titoitsuButton.isChecked = false
             selectedTiles.clear()
-            isSyuntsuButtonPressed = false
-            isKoutsuButtonPressed = false
-            isTitoitsuButtonPressed = false
             handAdapter.notifyDataSetChanged()
         }
 
@@ -119,15 +113,27 @@ class MainActivity : AppCompatActivity() {
         binding.syuntsuButton.setOnClickListener {
             // 順子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
             isSyuntsuButtonPressed = !isSyuntsuButtonPressed
+            isKoutsuButtonPressed = false
+            isTitoitsuButtonPressed = false
+            binding.koutsuButton.isChecked = false
+            binding.titoitsuButton.isChecked = false
         }
 
         binding.koutsuButton.setOnClickListener {
             // 刻子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
             isKoutsuButtonPressed = !isKoutsuButtonPressed
+            isSyuntsuButtonPressed = false
+            isTitoitsuButtonPressed = false
+            binding.syuntsuButton.isChecked = false
+            binding.titoitsuButton.isChecked = false
         }
 
         binding.titoitsuButton.setOnClickListener{
             isTitoitsuButtonPressed = !isTitoitsuButtonPressed
+            isSyuntsuButtonPressed = false
+            isKoutsuButtonPressed = false
+            binding.syuntsuButton.isChecked = false
+            binding.koutsuButton.isChecked = false
         }
     }
 
@@ -186,10 +192,9 @@ class MainActivity : AppCompatActivity() {
         val resourcePrefix = "tiles_"
 
         if (isSyuntsuButtonPressed && tileNumber < 8) {
-            val startNumber = tileNumber
             val endNumber = tileNumber + 2
 
-            for (i in startNumber..endNumber) {
+            for (i in tileNumber..endNumber) {
                 val resourceName = resourcePrefix + tileType + "_" + i.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
                 val tile = MahjongTile(tileType, i, resourceId)
@@ -214,14 +219,7 @@ class MainActivity : AppCompatActivity() {
                 val tile = MahjongTile(tileType, selectNumber, resourceId)
                 tileList.add(tile)
             }
-        } /*else {
-            val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
-            val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-            val tile = MahjongTile(tileType, tileNumber, resourceId)
-            tileList.add(tile)
-
-            selectedTiles.add(tile)
-        }*/
+        }
 
         return tileList
     }
