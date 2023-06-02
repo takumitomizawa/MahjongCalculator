@@ -8,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
@@ -32,6 +33,7 @@ class MainActivity : AppCompatActivity() {
     private val selectedTiles = mutableListOf<MahjongTile>()
 
     private var isSyuntsuButtonPressed = false
+    private var isKoutsuButtonPressed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -64,47 +66,39 @@ class MainActivity : AppCompatActivity() {
 
         manzuAdapter.setOnTileClickListener { tile ->
             if (isSyuntsuButtonPressed) {
-                val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-                selectedTiles.addAll(tilesToAddForTappedTile)
-                handAdapter.notifyDataSetChanged()
-
-            } else {
-                selectedTiles.add(tile)
-                handAdapter.notifyDataSetChanged()
+                SyuntsuButtonState(tile)
+            } else if (isKoutsuButtonPressed) {
+                KoutsuButtonState(tile)
             }
         }
 
         pinzuAdapter.setOnTileClickListener { tile ->
             if (isSyuntsuButtonPressed) {
-                val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-                selectedTiles.addAll(tilesToAddForTappedTile)
-                handAdapter.notifyDataSetChanged()
-
-            } else {
-                selectedTiles.add(tile)
-                handAdapter.notifyDataSetChanged()
+                SyuntsuButtonState(tile)
+            } else if (isKoutsuButtonPressed) {
+                KoutsuButtonState(tile)
             }
         }
 
         souzuAdapter.setOnTileClickListener { tile ->
             if (isSyuntsuButtonPressed) {
-                val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-                selectedTiles.addAll(tilesToAddForTappedTile)
-                handAdapter.notifyDataSetChanged()
-
-            } else {
-                selectedTiles.add(tile)
-                handAdapter.notifyDataSetChanged()
+                SyuntsuButtonState(tile)
+            } else if (isKoutsuButtonPressed) {
+                KoutsuButtonState(tile)
             }
         }
 
         jiAdapter.setOnTileClickListener { tile ->
-            selectedTiles.add(tile)
+            if (isKoutsuButtonPressed) {
+                KoutsuButtonState(tile)
+            }
             handAdapter.notifyDataSetChanged()
         }
 
         binding.resetButton.setOnClickListener {
             selectedTiles.clear()
+            isSyuntsuButtonPressed = false
+            isKoutsuButtonPressed = false
             handAdapter.notifyDataSetChanged()
         }
 
@@ -114,11 +108,17 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.syuntsuButton.setOnClickListener {
+            // 順子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
             isSyuntsuButtonPressed = !isSyuntsuButtonPressed
+        }
+
+        binding.koutsuButton.setOnClickListener {
+            // 刻子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
+            isKoutsuButtonPressed = !isKoutsuButtonPressed
         }
     }
 
-    /*private fun SyuntsuButtonState() { tile ->
+    private fun SyuntsuButtonState(tile: MahjongTile) {
         if (isSyuntsuButtonPressed) {
             val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
             selectedTiles.addAll(tilesToAddForTappedTile)
@@ -128,7 +128,19 @@ class MainActivity : AppCompatActivity() {
             selectedTiles.add(tile)
             handAdapter.notifyDataSetChanged()
         }
-    }*/
+    }
+
+    private fun KoutsuButtonState(tile: MahjongTile) {
+        if (isKoutsuButtonPressed) {
+            val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+            selectedTiles.addAll(tilesToAddForTappedTile)
+            handAdapter.notifyDataSetChanged()
+
+        } else {
+            selectedTiles.add(tile)
+            handAdapter.notifyDataSetChanged()
+        }
+    }
 
     private fun getTiles(tileType: String): List<MahjongTile> {
         val tileList = mutableListOf<MahjongTile>()
@@ -159,6 +171,15 @@ class MainActivity : AppCompatActivity() {
                 tileList.add(tile)
             }
 
+        } else if (isKoutsuButtonPressed) {
+            val selectNumber = tileNumber
+
+            for (i in 0..2) {
+                val resourceName = resourcePrefix + tileType + "_" + selectNumber.toString()
+                val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+                val tile = MahjongTile(tileType, selectNumber, resourceId)
+                tileList.add(tile)
+            }
         } else {
             val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
@@ -170,4 +191,14 @@ class MainActivity : AppCompatActivity() {
 
         return tileList
     }
+
+// 槓子の処理はこれでOK！
+/*for (i in 0..3){
+        val resourceName = resourcePrefix + tileType + "_" + selectNumber.toString()
+        val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+        val tile = MahjongTile(tileType, selectNumber, resourceId)
+        tileList.add(tile)
+    }*/
+
+
 }
