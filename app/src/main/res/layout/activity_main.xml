@@ -126,9 +126,11 @@
         app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
         />
 
-    <Button
+    <ToggleButton
         android:id="@+id/ponButton"
-        android:text="ポン"
+        android:checked="false"
+        android:textOn="ポン"
+        android:textOff="ポン"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -137,9 +139,10 @@
         app:layout_constraintStart_toEndOf="@id/recyclerViewManzu"
         />
 
-    <Button
+    <ToggleButton
         android:id="@+id/tiButton"
-        android:text="チー"
+        android:textOn="チー"
+        android:textOff="チー"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
