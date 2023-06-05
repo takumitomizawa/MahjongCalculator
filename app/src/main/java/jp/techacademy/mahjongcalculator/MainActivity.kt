@@ -75,7 +75,9 @@ class MainActivity : AppCompatActivity() {
                 PonButtonState(tile)
             } else if (isTiButtonPressed) {
                 TiButtonState(tile)
-            } else if (isAnkanButtonPressed){
+            } else if (isAnkanButtonPressed) {
+                kanButtonState(tile)
+            } else if (isMinkanButtonPressed) {
                 kanButtonState(tile)
             }
         }
@@ -91,7 +93,9 @@ class MainActivity : AppCompatActivity() {
                 PonButtonState(tile)
             } else if (isTiButtonPressed) {
                 TiButtonState(tile)
-            } else if (isAnkanButtonPressed){
+            } else if (isAnkanButtonPressed) {
+                kanButtonState(tile)
+            } else if (isMinkanButtonPressed) {
                 kanButtonState(tile)
             }
         }
@@ -107,7 +111,9 @@ class MainActivity : AppCompatActivity() {
                 PonButtonState(tile)
             } else if (isTiButtonPressed) {
                 TiButtonState(tile)
-            } else if (isAnkanButtonPressed){
+            } else if (isAnkanButtonPressed) {
+                kanButtonState(tile)
+            } else if (isMinkanButtonPressed) {
                 kanButtonState(tile)
             }
         }
@@ -117,7 +123,9 @@ class MainActivity : AppCompatActivity() {
                 KoutsuButtonState(tile)
             } else if (isTitoitsuButtonPressed) {
                 TitoitsuButtonState(tile)
-            } else if (isAnkanButtonPressed){
+            } else if (isAnkanButtonPressed) {
+                kanButtonState(tile)
+            } else if (isMinkanButtonPressed) {
                 kanButtonState(tile)
             }
         }
@@ -228,7 +236,7 @@ class MainActivity : AppCompatActivity() {
             isAnkanButtonPressed = false
         }
 
-        binding.ankanButton.setOnClickListener{
+        binding.ankanButton.setOnClickListener {
             isAnkanButtonPressed = !isAnkanButtonPressed
             binding.syuntsuButton.isChecked = false
             binding.koutsuButton.isChecked = false
@@ -244,7 +252,7 @@ class MainActivity : AppCompatActivity() {
             isMinkanButtonPressed = false
         }
 
-        binding.minkanButton.setOnClickListener{
+        binding.minkanButton.setOnClickListener {
             isMinkanButtonPressed = !isMinkanButtonPressed
             binding.syuntsuButton.isChecked = false
             binding.koutsuButton.isChecked = false
@@ -321,13 +329,14 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun kanButtonState(tile: MahjongTile){
+    private fun kanButtonState(tile: MahjongTile) {
         if (isAnkanButtonPressed) {
+
             val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
             selectedTiles.addAll(tilesToAddForTappedTile)
             handAdapter.notifyDataSetChanged()
 
-        } else if (isMinkanButtonPressed){
+        } else if (isMinkanButtonPressed) {
             val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
             selectedTiles.addAll(tilesToAddForTappedTile)
             handAdapter.notifyDataSetChanged()
@@ -396,8 +405,21 @@ class MainActivity : AppCompatActivity() {
                 val tile = MahjongTile(tileType, i, resourceId)
                 tileList.add(tile)
             }
+        } else if (isAnkanButtonPressed) {
+            for (i in 0..3) {
+                val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
+                val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+                val tile = MahjongTile(tileType, tileNumber, resourceId)
+                tileList.add(tile)
+            }
+        } else if (isMinkanButtonPressed) {
+            for (i in 0..3) {
+                val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
+                val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+                val tile = MahjongTile(tileType, tileNumber, resourceId)
+                tileList.add(tile)
+            }
         }
-
         return tileList
 
 // 槓子の処理はこれでOK！
@@ -407,7 +429,6 @@ class MainActivity : AppCompatActivity() {
         val tile = MahjongTile(tileType, selectNumber, resourceId)
         tileList.add(tile)
     }*/
-
     }
 }
 
