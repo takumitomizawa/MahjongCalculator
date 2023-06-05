@@ -3,9 +3,15 @@ package jp.techacademy.mahjongcalculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.view.ViewGroup
+import android.view.animation.LinearInterpolator
+import android.widget.GridLayout
+import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.techacademy.mahjongcalculator.databinding.ActivityMainBinding
+import java.text.FieldPosition
 
 class MainActivity : AppCompatActivity() {
 
@@ -46,7 +52,13 @@ class MainActivity : AppCompatActivity() {
         recyclerViewSouzu = binding.recyclerViewSouzu
         recyclerViewJi = binding.recyclerViewJi
 
-        recyclerViewHand.layoutManager = GridLayoutManager(this, 14)
+        val layoutManager = object : LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false){
+            override fun canScrollHorizontally(): Boolean {
+                return false
+            }
+        }
+
+        recyclerViewHand.layoutManager = layoutManager
         recyclerViewManzu.layoutManager = GridLayoutManager(this, 9)
         recyclerViewPinzu.layoutManager = GridLayoutManager(this, 9)
         recyclerViewSouzu.layoutManager = GridLayoutManager(this, 9)
@@ -64,6 +76,20 @@ class MainActivity : AppCompatActivity() {
         recyclerViewSouzu.adapter = souzuAdapter
         recyclerViewJi.adapter = jiAdapter
 
+        /*val initialSpanCount = 14
+        val itemWidth = resources.getDimensionPixelSize(R.dimen.item_width)
+
+        val layoutManager = GridLayoutManager(this, initialSpanCount)
+        val spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+            override fun getSpanSize(position: Int): Int {
+                return if (position < handAdapter.itemCount) 1 else layoutManager.spanCount
+            }
+        }
+        layoutManager.spanSizeLookup = spanSizeLookup
+
+        recyclerViewHand.layoutManager = layoutManager
+        recyclerViewHand.layoutParams.width = itemWidth * initialSpanCount*/
+
         manzuAdapter.setOnTileClickListener { tile ->
             if (isSyuntsuButtonPressed) {
                 SyuntsuButtonState(tile)
@@ -75,10 +101,12 @@ class MainActivity : AppCompatActivity() {
                 PonButtonState(tile)
             } else if (isTiButtonPressed) {
                 TiButtonState(tile)
-            } else if (isAnkanButtonPressed) {
+            } else if (isAnkanButtonPressed || isMinkanButtonPressed) {
                 kanButtonState(tile)
-            } else if (isMinkanButtonPressed) {
-                kanButtonState(tile)
+                isAnkanButtonPressed = false
+                binding.ankanButton.isChecked = false
+                isMinkanButtonPressed = false
+                binding.minkanButton.isChecked = false
             }
         }
 
@@ -146,6 +174,11 @@ class MainActivity : AppCompatActivity() {
             isMinkanButtonPressed = false
             isAnkanButtonPressed = false
             selectedTiles.clear()
+            val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
+            layoutManager.spanCount = 14
+            val layoutParams = recyclerViewHand.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.marginEnd = resources.getDimensionPixelSize(R.dimen.margin_end)
+            recyclerViewHand.layoutParams = layoutParams
             handAdapter.notifyDataSetChanged()
         }
 
@@ -331,14 +364,23 @@ class MainActivity : AppCompatActivity() {
 
     private fun kanButtonState(tile: MahjongTile) {
         if (isAnkanButtonPressed) {
-
             val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-            selectedTiles.addAll(tilesToAddForTappedTile)
-            handAdapter.notifyDataSetChanged()
+            //selectedTiles.addAll(tilesToAddForTappedTile)
 
+            val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
+            layoutManager.spanCount -= 3
+
+            val layoutParams = recyclerViewHand.layoutParams as ViewGroup.MarginLayoutParams
+            layoutParams.marginEnd += resources.getDimensionPixelSize(R.dimen.new_margin_end)
+            recyclerViewHand.layoutParams = layoutParams
+
+            handAdapter.notifyDataSetChanged()
         } else if (isMinkanButtonPressed) {
             val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-            selectedTiles.addAll(tilesToAddForTappedTile)
+            //selectedTiles.addAll(tilesToAddForTappedTile)
+
+            val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
+            layoutManager.spanCount -= 3
             handAdapter.notifyDataSetChanged()
         }
     }
