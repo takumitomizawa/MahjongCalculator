@@ -141,6 +141,7 @@
 
     <ToggleButton
         android:id="@+id/tiButton"
+        android:checked="false"
         android:textOn="チー"
         android:textOff="チー"
         android:layout_width="wrap_content"
@@ -151,9 +152,11 @@
         app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
         />
 
-    <Button
+    <ToggleButton
         android:id="@+id/minkanButton"
-        android:text="明槓"
+        android:checked="false"
+        android:textOn="明槓"
+        android:textOff="明槓"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -162,9 +165,11 @@
         app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
         />
 
-    <Button
+    <ToggleButton
         android:id="@+id/ankanButton"
-        android:text="暗槓"
+        android:checked="false"
+        android:textOn="暗槓"
+        android:textOff="暗槓"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"

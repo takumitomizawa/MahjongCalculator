@@ -25,11 +25,15 @@ class MainActivity : AppCompatActivity() {
 
     private val selectedTiles = mutableListOf<MahjongTile>()
 
+    private var kanCount = 0
+
     private var isSyuntsuButtonPressed = false
     private var isKoutsuButtonPressed = false
     private var isTitoitsuButtonPressed = false
     private var isPonButtonPressed = false
     private var isTiButtonPressed = false
+    private var isAnkanButtonPressed = false
+    private var isMinkanButtonPressed = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -71,6 +75,8 @@ class MainActivity : AppCompatActivity() {
                 PonButtonState(tile)
             } else if (isTiButtonPressed) {
                 TiButtonState(tile)
+            } else if (isAnkanButtonPressed){
+                kanButtonState(tile)
             }
         }
 
@@ -85,6 +91,8 @@ class MainActivity : AppCompatActivity() {
                 PonButtonState(tile)
             } else if (isTiButtonPressed) {
                 TiButtonState(tile)
+            } else if (isAnkanButtonPressed){
+                kanButtonState(tile)
             }
         }
 
@@ -99,6 +107,8 @@ class MainActivity : AppCompatActivity() {
                 PonButtonState(tile)
             } else if (isTiButtonPressed) {
                 TiButtonState(tile)
+            } else if (isAnkanButtonPressed){
+                kanButtonState(tile)
             }
         }
 
@@ -107,6 +117,8 @@ class MainActivity : AppCompatActivity() {
                 KoutsuButtonState(tile)
             } else if (isTitoitsuButtonPressed) {
                 TitoitsuButtonState(tile)
+            } else if (isAnkanButtonPressed){
+                kanButtonState(tile)
             }
         }
 
@@ -116,11 +128,15 @@ class MainActivity : AppCompatActivity() {
             binding.titoitsuButton.isChecked = false
             binding.ponButton.isChecked = false
             binding.tiButton.isChecked = false
+            binding.minkanButton.isChecked = false
+            binding.ankanButton.isChecked = false
             isSyuntsuButtonPressed = false
             isKoutsuButtonPressed = false
             isTitoitsuButtonPressed = false
             isPonButtonPressed = false
             isTiButtonPressed = false
+            isMinkanButtonPressed = false
+            isAnkanButtonPressed = false
             selectedTiles.clear()
             handAdapter.notifyDataSetChanged()
         }
@@ -137,10 +153,14 @@ class MainActivity : AppCompatActivity() {
             binding.titoitsuButton.isChecked = false
             binding.ponButton.isChecked = false
             binding.tiButton.isChecked = false
+            binding.minkanButton.isChecked = false
+            binding.ankanButton.isChecked = false
             isKoutsuButtonPressed = false
             isTitoitsuButtonPressed = false
             isPonButtonPressed = false
             isTiButtonPressed = false
+            isMinkanButtonPressed = false
+            isAnkanButtonPressed = false
         }
 
         binding.koutsuButton.setOnClickListener {
@@ -150,10 +170,14 @@ class MainActivity : AppCompatActivity() {
             binding.titoitsuButton.isChecked = false
             binding.ponButton.isChecked = false
             binding.tiButton.isChecked = false
+            binding.minkanButton.isChecked = false
+            binding.ankanButton.isChecked = false
             isSyuntsuButtonPressed = false
             isTitoitsuButtonPressed = false
             isPonButtonPressed = false
             isTiButtonPressed = false
+            isMinkanButtonPressed = false
+            isAnkanButtonPressed = false
         }
 
         binding.titoitsuButton.setOnClickListener {
@@ -162,10 +186,14 @@ class MainActivity : AppCompatActivity() {
             binding.koutsuButton.isChecked = false
             binding.ponButton.isChecked = false
             binding.tiButton.isChecked = false
+            binding.minkanButton.isChecked = false
+            binding.ankanButton.isChecked = false
             isSyuntsuButtonPressed = false
             isKoutsuButtonPressed = false
             isPonButtonPressed = false
             isTiButtonPressed = false
+            isMinkanButtonPressed = false
+            isAnkanButtonPressed = false
         }
 
         binding.ponButton.setOnClickListener {
@@ -174,10 +202,14 @@ class MainActivity : AppCompatActivity() {
             binding.koutsuButton.isChecked = false
             binding.titoitsuButton.isChecked = false
             binding.tiButton.isChecked = false
+            binding.minkanButton.isChecked = false
+            binding.ankanButton.isChecked = false
             isSyuntsuButtonPressed = false
             isKoutsuButtonPressed = false
             isTitoitsuButtonPressed = false
             isTiButtonPressed = false
+            isMinkanButtonPressed = false
+            isAnkanButtonPressed = false
         }
 
         binding.tiButton.setOnClickListener {
@@ -186,10 +218,46 @@ class MainActivity : AppCompatActivity() {
             binding.koutsuButton.isChecked = false
             binding.titoitsuButton.isChecked = false
             binding.ponButton.isChecked = false
+            binding.minkanButton.isChecked = false
+            binding.ankanButton.isChecked = false
             isSyuntsuButtonPressed = false
             isKoutsuButtonPressed = false
             isTitoitsuButtonPressed = false
             isPonButtonPressed = false
+            isMinkanButtonPressed = false
+            isAnkanButtonPressed = false
+        }
+
+        binding.ankanButton.setOnClickListener{
+            isAnkanButtonPressed = !isAnkanButtonPressed
+            binding.syuntsuButton.isChecked = false
+            binding.koutsuButton.isChecked = false
+            binding.titoitsuButton.isChecked = false
+            binding.ponButton.isChecked = false
+            binding.tiButton.isChecked = false
+            binding.minkanButton.isChecked = false
+            isSyuntsuButtonPressed = false
+            isKoutsuButtonPressed = false
+            isTitoitsuButtonPressed = false
+            isPonButtonPressed = false
+            isTiButtonPressed = false
+            isMinkanButtonPressed = false
+        }
+
+        binding.minkanButton.setOnClickListener{
+            isMinkanButtonPressed = !isMinkanButtonPressed
+            binding.syuntsuButton.isChecked = false
+            binding.koutsuButton.isChecked = false
+            binding.titoitsuButton.isChecked = false
+            binding.ponButton.isChecked = false
+            binding.tiButton.isChecked = false
+            binding.ankanButton.isChecked = false
+            isSyuntsuButtonPressed = false
+            isKoutsuButtonPressed = false
+            isTitoitsuButtonPressed = false
+            isPonButtonPressed = false
+            isTiButtonPressed = false
+            isAnkanButtonPressed = false
         }
     }
 
@@ -249,6 +317,19 @@ class MainActivity : AppCompatActivity() {
 
         } else {
             selectedTiles.add(tile)
+            handAdapter.notifyDataSetChanged()
+        }
+    }
+
+    private fun kanButtonState(tile: MahjongTile){
+        if (isAnkanButtonPressed) {
+            val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+            selectedTiles.addAll(tilesToAddForTappedTile)
+            handAdapter.notifyDataSetChanged()
+
+        } else if (isMinkanButtonPressed){
+            val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+            selectedTiles.addAll(tilesToAddForTappedTile)
             handAdapter.notifyDataSetChanged()
         }
     }
