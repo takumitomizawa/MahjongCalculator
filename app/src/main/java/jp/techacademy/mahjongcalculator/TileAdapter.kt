@@ -12,6 +12,7 @@ class TileAdapter(
 ) : RecyclerView.Adapter<TileAdapter.TileViewHolder>() {
 
     private var onTileClickListener: ((MahjongTile) -> Unit)? = null
+    private val selectedTiles = mutableListOf<MahjongTile>()
 
     fun setOnTileClickListener(listener: (MahjongTile) -> Unit){
         onTileClickListener = listener
@@ -28,6 +29,10 @@ class TileAdapter(
     }
 
     override fun getItemCount() = tileList.size
+    fun getSelectedTiles(): List<MahjongTile> {
+
+        return selectedTiles
+    }
 
     inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val tileImageView: ImageView = itemView.findViewById(R.id.imageViewTile)
