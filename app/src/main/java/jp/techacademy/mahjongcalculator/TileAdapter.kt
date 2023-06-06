@@ -17,11 +17,6 @@ class TileAdapter(
         onTileClickListener = listener
     }
 
-    /*fun clearData(){
-        tileList.clear()
-        notifyDataSetChanged()
-    }*/
-
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) {
         holder.tileImageView.setImageResource(tileList[position].imageResourceId)
     }

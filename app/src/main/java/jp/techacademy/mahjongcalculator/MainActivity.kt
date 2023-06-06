@@ -3,12 +3,10 @@ package jp.techacademy.mahjongcalculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.service.quicksettings.Tile
 import android.view.ViewGroup
-import android.view.animation.LinearInterpolator
 import android.widget.GridLayout
-import android.widget.LinearLayout
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.techacademy.mahjongcalculator.databinding.ActivityMainBinding
 import java.text.FieldPosition
@@ -52,13 +50,7 @@ class MainActivity : AppCompatActivity() {
         recyclerViewSouzu = binding.recyclerViewSouzu
         recyclerViewJi = binding.recyclerViewJi
 
-        val layoutManager = object : LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false){
-            override fun canScrollHorizontally(): Boolean {
-                return false
-            }
-        }
-
-        recyclerViewHand.layoutManager = layoutManager
+        recyclerViewHand.layoutManager = GridLayoutManager(this, 14)
         recyclerViewManzu.layoutManager = GridLayoutManager(this, 9)
         recyclerViewPinzu.layoutManager = GridLayoutManager(this, 9)
         recyclerViewSouzu.layoutManager = GridLayoutManager(this, 9)
@@ -76,7 +68,7 @@ class MainActivity : AppCompatActivity() {
         recyclerViewSouzu.adapter = souzuAdapter
         recyclerViewJi.adapter = jiAdapter
 
-        /*val initialSpanCount = 14
+        val initialSpanCount = 14
         val itemWidth = resources.getDimensionPixelSize(R.dimen.item_width)
 
         val layoutManager = GridLayoutManager(this, initialSpanCount)
@@ -88,7 +80,7 @@ class MainActivity : AppCompatActivity() {
         layoutManager.spanSizeLookup = spanSizeLookup
 
         recyclerViewHand.layoutManager = layoutManager
-        recyclerViewHand.layoutParams.width = itemWidth * initialSpanCount*/
+        recyclerViewHand.layoutParams.width = itemWidth * initialSpanCount
 
         manzuAdapter.setOnTileClickListener { tile ->
             if (isSyuntsuButtonPressed) {
@@ -103,10 +95,6 @@ class MainActivity : AppCompatActivity() {
                 TiButtonState(tile)
             } else if (isAnkanButtonPressed || isMinkanButtonPressed) {
                 kanButtonState(tile)
-                isAnkanButtonPressed = false
-                binding.ankanButton.isChecked = false
-                isMinkanButtonPressed = false
-                binding.minkanButton.isChecked = false
             }
         }
 
@@ -176,14 +164,15 @@ class MainActivity : AppCompatActivity() {
             selectedTiles.clear()
             val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
             layoutManager.spanCount = 14
-            val layoutParams = recyclerViewHand.layoutParams as ViewGroup.MarginLayoutParams
-            layoutParams.marginEnd = resources.getDimensionPixelSize(R.dimen.margin_end)
-            recyclerViewHand.layoutParams = layoutParams
             handAdapter.notifyDataSetChanged()
         }
 
         binding.nextButton.setOnClickListener {
+
+            handAdapter = TileAdapter(selectedTiles)
+            val selectedTiles = handAdapter.getSelectedTiles()
             val intent = Intent(this, SettingActivity::class.java)
+            intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
             startActivity(intent)
         }
 
@@ -364,23 +353,27 @@ class MainActivity : AppCompatActivity() {
 
     private fun kanButtonState(tile: MahjongTile) {
         if (isAnkanButtonPressed) {
-            val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-            //selectedTiles.addAll(tilesToAddForTappedTile)
+            selectedTiles.add(tile)
+
+            val backTile = MahjongTile(tile.number, tile.tileType, true, true, R.drawable.tiles_back)
+            selectedTiles.add(backTile)
+
+            val backTile2 = MahjongTile(tile.number, tile.tileType, true, true, R.drawable.tiles_back)
+            selectedTiles.add(backTile2)
+
+            val revealedTile = MahjongTile(tile.number, tile.tileType, false, false, tile.imageResourceId)
+            selectedTiles.add(revealedTile)
 
             val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
-            layoutManager.spanCount -= 3
-
-            val layoutParams = recyclerViewHand.layoutParams as ViewGroup.MarginLayoutParams
-            layoutParams.marginEnd += resources.getDimensionPixelSize(R.dimen.new_margin_end)
-            recyclerViewHand.layoutParams = layoutParams
-
+            layoutManager.spanCount += 1
             handAdapter.notifyDataSetChanged()
+
         } else if (isMinkanButtonPressed) {
             val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
-            //selectedTiles.addAll(tilesToAddForTappedTile)
+            selectedTiles.addAll(tilesToAddForTappedTile)
 
             val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
-            layoutManager.spanCount -= 3
+            layoutManager.spanCount += 1
             handAdapter.notifyDataSetChanged()
         }
     }
@@ -394,7 +387,7 @@ class MainActivity : AppCompatActivity() {
         for (i in 1..9) {
             val resourceName = resourcePrefix + tileType + "_" + i.toString()
             val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-            val tile = MahjongTile(tileType, i, resourceId)
+            val tile = MahjongTile(i, tileType, false, false, resourceId)
             tileList.add(tile)
         }
         return tileList
@@ -410,7 +403,7 @@ class MainActivity : AppCompatActivity() {
             for (i in tileNumber..endNumber) {
                 val resourceName = resourcePrefix + tileType + "_" + i.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-                val tile = MahjongTile(tileType, i, resourceId)
+                val tile = MahjongTile(i, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
 
@@ -419,7 +412,7 @@ class MainActivity : AppCompatActivity() {
             for (i in 0..2) {
                 val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-                val tile = MahjongTile(tileType, tileNumber, resourceId)
+                val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
         } else if (isTitoitsuButtonPressed) {
@@ -427,7 +420,7 @@ class MainActivity : AppCompatActivity() {
             for (i in 0..1) {
                 val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-                val tile = MahjongTile(tileType, tileNumber, resourceId)
+                val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
         } else if (isPonButtonPressed) {
@@ -435,7 +428,7 @@ class MainActivity : AppCompatActivity() {
             for (i in 0..2) {
                 val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-                val tile = MahjongTile(tileType, tileNumber, resourceId)
+                val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
         } else if (isTiButtonPressed && tileNumber < 8) {
@@ -444,21 +437,21 @@ class MainActivity : AppCompatActivity() {
             for (i in tileNumber..endNumber) {
                 val resourceName = resourcePrefix + tileType + "_" + i.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-                val tile = MahjongTile(tileType, i, resourceId)
+                val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
         } else if (isAnkanButtonPressed) {
             for (i in 0..3) {
                 val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-                val tile = MahjongTile(tileType, tileNumber, resourceId)
+                val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
         } else if (isMinkanButtonPressed) {
             for (i in 0..3) {
                 val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
                 val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-                val tile = MahjongTile(tileType, tileNumber, resourceId)
+                val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
         }
