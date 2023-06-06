@@ -2,6 +2,7 @@ package jp.techacademy.mahjongcalculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.service.quicksettings.Tile
 import android.view.animation.LinearInterpolator
 import androidx.recyclerview.widget.AdapterListUpdateCallback
 import androidx.recyclerview.widget.GridLayoutManager
