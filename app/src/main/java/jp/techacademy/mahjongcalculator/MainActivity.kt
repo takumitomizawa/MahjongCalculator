@@ -3,6 +3,7 @@ package jp.techacademy.mahjongcalculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.techacademy.mahjongcalculator.databinding.ActivityMainBinding
@@ -159,16 +160,12 @@ class MainActivity : AppCompatActivity() {
             isMinkanButtonPressed = false
             isAnkanButtonPressed = false
             selectedTiles.clear()
-            /*val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
-            layoutManager.spanCount = 14*/
             recyclerViewHand.layoutManager = GridLayoutManager(this, 14)
             recyclerViewHand.adapter = handAdapter
             handAdapter.notifyDataSetChanged()
         }
 
         binding.nextButton.setOnClickListener {
-            val selectedTiles = handAdapter.getSelectedTiles()
-            handAdapter = TileAdapter(selectedTiles)
             val intent = Intent(this, SettingActivity::class.java)
             intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
             startActivity(intent)

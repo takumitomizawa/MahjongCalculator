@@ -23,7 +23,8 @@ class SettingActivity : AppCompatActivity() {
         binding = ActivitySettingBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.recyclerViewSettingHand.layoutManager = LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewSettingHand = binding.recyclerViewSettingHand
+        recyclerViewSettingHand.layoutManager = GridLayoutManager(this, 14)
 
         val selectedTiles = intent.getParcelableArrayListExtra<MahjongTile>("selectedTiles")
         settingAdapter = selectedTiles?.let { TileAdapter(it) }!!

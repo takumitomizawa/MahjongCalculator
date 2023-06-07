@@ -4,17 +4,341 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#3cb371"
     tools:context=".SettingActivity">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerViewSettingHand"
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewSettingHand"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            android:layout_marginStart="50dp"
+            android:layout_marginEnd="50dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            />
+
+        <ToggleButton
+            android:id="@+id/parent_toggle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textOn="親"
+            android:textOff="親"
+            android:layout_marginTop="20dp"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand"
+            app:layout_constraintStart_toStartOf="parent"
+            android:layout_marginStart="50dp"
+            />
+
+    <ToggleButton
+        android:id="@+id/kid_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="子"
+        android:textOff="子"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand"
+        app:layout_constraintStart_toEndOf="@id/parent_toggle"
+        android:layout_marginStart="20dp"
+        />
+
+    <!--<Switch
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="50dp"/>-->
+
+    <ToggleButton
+        android:id="@+id/tsumo_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="ツモ"
+        android:textOff="ツモ"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/parent_toggle"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="50dp"
+        />
+
+    <ToggleButton
+        android:id="@+id/ron_toggle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textOn="ロン"
+        android:textOff="ロン"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/kid_toggle"
+        app:layout_constraintStart_toEndOf="@id/parent_toggle"
+        android:layout_marginStart="20dp"
+        />
+
+    <ImageView
+        android:id="@+id/doraUpImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/add_circle"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/ron_toggle"
+        app:layout_constraintEnd_toEndOf="@id/ron_toggle"
+        />
+
+    <ImageView
+        android:id="@+id/doraDownImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/remove_circle"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/ron_toggle"
+        app:layout_constraintStart_toStartOf="@id/tsumo_toggle"
+        />
+
+    <ImageView
+        android:id="@+id/upImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/add_circle"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/doraUpImageView"
+        app:layout_constraintEnd_toEndOf="@id/ron_toggle"
+        />
+
+    <ImageView
+        android:id="@+id/downImageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/remove_circle"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/doraDownImageView"
+        app:layout_constraintStart_toStartOf="@id/tsumo_toggle"
+        />
+
+    <TextView
+        android:id="@+id/roundWindText"
+        android:text="場風"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand"
+        app:layout_constraintStart_toEndOf="@id/kid_toggle"
+        android:layout_marginStart="50dp"
+        />
+
+    <TextView
+        android:id="@+id/ownWindText"
+        android:text="自風"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand"
+        app:layout_constraintStart_toEndOf="@id/roundWindText"
+        android:layout_marginStart="60dp"
+        />
+
+    <RadioButton
+        android:text="東"
+        android:id="@+id/eastRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/roundWindText"
+        app:layout_constraintStart_toEndOf="@id/kid_toggle"
+        android:layout_marginStart="40dp"
+        />
+
+    <RadioButton
+        android:text="南"
+        android:id="@+id/southRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/eastRadioButton"
+        app:layout_constraintStart_toEndOf="@id/kid_toggle"
+        android:layout_marginStart="40dp"
+        />
+
+    <RadioButton
+        android:text="西"
+        android:id="@+id/westRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/southRadioButton"
+        app:layout_constraintStart_toEndOf="@id/kid_toggle"
+        android:layout_marginStart="40dp"
+        />
+
+    <RadioButton
+        android:text="北"
+        android:id="@+id/northRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/westRadioButton"
+        app:layout_constraintStart_toEndOf="@id/kid_toggle"
+        app:layout_constraintBottom_toBottomOf="@id/upImageView"
+        android:layout_marginStart="40dp"
+        />
+
+    <RadioButton
+        android:text="東"
+        android:id="@+id/eastOwnRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/roundWindText"
+        app:layout_constraintStart_toEndOf="@id/eastRadioButton"
+        android:layout_marginStart="40dp"
+        />
+
+    <RadioButton
+        android:text="南"
+        android:id="@+id/southOwnRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/eastRadioButton"
+        app:layout_constraintStart_toEndOf="@id/southRadioButton"
+        android:layout_marginStart="40dp"
+        />
+
+    <RadioButton
+        android:text="西"
+        android:id="@+id/westOwnRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/southRadioButton"
+        app:layout_constraintStart_toEndOf="@id/westRadioButton"
+        android:layout_marginStart="40dp"
+        />
+
+    <RadioButton
+        android:text="北"
+        android:id="@+id/northOwnRadioButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/westRadioButton"
+        app:layout_constraintStart_toEndOf="@id/northRadioButton"
+        app:layout_constraintBottom_toBottomOf="@id/upImageView"
+        android:layout_marginStart="40dp"
+        />
+
+    <CheckBox
+        android:text="リーチ"
+        android:id="@+id/checkBoxReach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand"
+        app:layout_constraintStart_toEndOf="@id/eastOwnRadioButton"
+        android:layout_marginStart="60dp"/>
+
+    <CheckBox
+        android:text="ダブルリーチ"
+        android:id="@+id/checkBoxDoubleReach"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxReach"
+        app:layout_constraintStart_toEndOf="@id/eastOwnRadioButton"
+        android:layout_marginStart="60dp"/>
+
+    <CheckBox
+        android:text="一発"
+        android:id="@+id/checkBoxOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxDoubleReach"
+        app:layout_constraintStart_toEndOf="@id/eastOwnRadioButton"
+        android:layout_marginStart="60dp"/>
+
+    <CheckBox
+        android:text="槍槓"
+        android:id="@+id/checkBoxChankan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxOne"
+        app:layout_constraintStart_toEndOf="@id/eastOwnRadioButton"
+        android:layout_marginStart="60dp"/>
+
+    <CheckBox
+        android:text="嶺上開花"
+        android:id="@+id/checkBoxRinshan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxChankan"
+        app:layout_constraintStart_toEndOf="@id/eastOwnRadioButton"
+        android:layout_marginStart="60dp"/>
+
+    <CheckBox
+        android:text="河底撈魚"
+        android:id="@+id/checkBoxHoutei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand"
+        app:layout_constraintStart_toEndOf="@id/checkBoxDoubleReach"
+        />
+
+    <CheckBox
+        android:text="海底撈月"
+        android:id="@+id/checkBoxHaitei"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_marginStart="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxHoutei"
+        app:layout_constraintStart_toEndOf="@id/checkBoxDoubleReach"
+        />
+
+    <CheckBox
+        android:text="天和"
+        android:id="@+id/checkBoxTenhou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxHaitei"
+        app:layout_constraintStart_toStartOf="@id/checkBoxHoutei"
+        />
+
+    <CheckBox
+        android:text="地和"
+        android:id="@+id/checkBoxTihou"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxTenhou"
+        app:layout_constraintStart_toStartOf="@id/checkBoxHoutei"
+        />
+
+    <ImageView
+        android:id="@+id/nextToResultButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/arrow_circle"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxChankan"
         app:layout_constraintEnd_toEndOf="parent"
         />
+
+    <ImageView
+        android:id="@+id/backToFirstButton"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:src="@drawable/arrow_circle_left"
+        android:layout_marginTop="5dp"
+        android:layout_marginEnd="10dp"
+        app:layout_constraintTop_toBottomOf="@+id/checkBoxChankan"
+        app:layout_constraintEnd_toStartOf="@id/nextToResultButton"
+        app:layout_constraintStart_toEndOf="@id/checkBoxRinshan"
+        android:layout_marginStart="10dp"/>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
