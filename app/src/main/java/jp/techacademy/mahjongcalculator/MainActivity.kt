@@ -1,9 +1,13 @@
 package jp.techacademy.mahjongcalculator
 
+import android.content.DialogInterface
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.techacademy.mahjongcalculator.databinding.ActivityMainBinding
@@ -27,7 +31,6 @@ class MainActivity : AppCompatActivity() {
 
     private val selectedTiles = mutableListOf<MahjongTile>()
 
-    private var kanCount = 0
 
     private var isSyuntsuButtonPressed = false
     private var isKoutsuButtonPressed = false
@@ -41,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        // ダイアログの表示
+        showCustomDialog()
 
         recyclerViewHand = binding.recyclerViewHand
         recyclerViewManzu = binding.recyclerViewManzu
@@ -284,6 +290,30 @@ class MainActivity : AppCompatActivity() {
             isTiButtonPressed = false
             isAnkanButtonPressed = false
         }
+    }
+
+    private fun showCustomDialog(){
+        val dialogBuilder = AlertDialog.Builder(this)
+        val inflater = layoutInflater
+
+        // レイアウトファイルをインフレートしてビューを取得
+        val dialogView = inflater.inflate(R.layout.dialog_layout, null)
+        dialogBuilder.setView(dialogView)
+
+        // メッセージを表示するTextViewを取得
+        val messageTextView = dialogView.findViewById<TextView>(R.id.messageTextView)
+
+        // メッセージを設定
+        messageTextView.text = "頭の牌を選択してください"
+
+        // OKボタンを設定
+        dialogBuilder.setPositiveButton("OK") { dialog: DialogInterface, _: Int ->
+            // OKボタンが押された時の処理
+            dialog.dismiss()
+        }
+
+        val dialog = dialogBuilder.create()
+        dialog.show()
     }
 
     private fun SyuntsuButtonState(tile: MahjongTile) {
