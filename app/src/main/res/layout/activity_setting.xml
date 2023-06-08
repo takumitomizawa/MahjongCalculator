@@ -14,7 +14,8 @@
         android:layout_marginStart="50dp"
         android:layout_marginEnd="50dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        tools:ignore="MissingConstraints" />
 
     <TextView
         android:id="@+id/parentModeText"
@@ -58,8 +59,7 @@
         android:textSize="25dp"
         app:layout_constraintBottom_toBottomOf="@id/eastRadioButton"
         app:layout_constraintEnd_toEndOf="@id/doraUpImageView"
-        app:layout_constraintTop_toTopOf="@id/goalChangeSwitch"
-         />
+        app:layout_constraintTop_toTopOf="@id/goalChangeSwitch" />
 
     <Switch
         android:id="@+id/goalChangeSwitch"
@@ -185,54 +185,54 @@
         app:layout_constraintStart_toEndOf="@id/roundWindText"
         app:layout_constraintTop_toBottomOf="@+id/recyclerViewSettingHand" />
 
-    <RadioButton
-        android:id="@+id/eastRadioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:text="東"
-        android:textColor="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="@id/doraUpImageView"
-        app:layout_constraintTop_toBottomOf="@+id/roundWindText" />
+        <RadioButton
+            android:id="@+id/eastRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:text="東"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            app:layout_constraintStart_toEndOf="@id/doraUpImageView"
+            app:layout_constraintTop_toBottomOf="@+id/roundWindText" />
 
-    <RadioButton
-        android:id="@+id/southRadioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:text="南"
-        android:textColor="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="@id/doraUpImageView"
-        app:layout_constraintTop_toBottomOf="@+id/eastRadioButton" />
+        <RadioButton
+            android:id="@+id/southRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:text="南"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            app:layout_constraintStart_toEndOf="@id/doraUpImageView"
+            app:layout_constraintTop_toBottomOf="@+id/eastRadioButton" />
 
-    <RadioButton
-        android:id="@+id/westRadioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:text="西"
-        android:textColor="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintStart_toEndOf="@id/doraUpImageView"
-        app:layout_constraintTop_toBottomOf="@+id/southRadioButton" />
+        <RadioButton
+            android:id="@+id/westRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:text="西"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            app:layout_constraintStart_toEndOf="@id/doraUpImageView"
+            app:layout_constraintTop_toBottomOf="@+id/southRadioButton" />
 
-    <RadioButton
-        android:id="@+id/northRadioButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
-        android:layout_marginTop="10dp"
-        android:text="北"
-        android:textColor="#FFFFFF"
-        android:textSize="18dp"
-        app:layout_constraintBottom_toBottomOf="@id/checkBoxRinshan"
-        app:layout_constraintStart_toEndOf="@id/doraUpImageView"
-        app:layout_constraintTop_toBottomOf="@+id/westRadioButton" />
+        <RadioButton
+            android:id="@+id/northRadioButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="40dp"
+            android:layout_marginTop="10dp"
+            android:text="北"
+            android:textColor="#FFFFFF"
+            android:textSize="18dp"
+            app:layout_constraintBottom_toBottomOf="@id/checkBoxRinshan"
+            app:layout_constraintStart_toEndOf="@id/doraUpImageView"
+            app:layout_constraintTop_toBottomOf="@+id/westRadioButton" />
 
     <RadioButton
         android:id="@+id/eastOwnRadioButton"
@@ -397,6 +397,5 @@
         android:text="計算開始"
         app:layout_constraintStart_toStartOf="@+id/checkBoxHoutei"
         app:layout_constraintTop_toBottomOf="@+id/checkBoxChankan" />
-
 
 </androidx.constraintlayout.widget.ConstraintLayout>

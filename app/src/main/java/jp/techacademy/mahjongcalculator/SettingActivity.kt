@@ -1,5 +1,6 @@
 package jp.techacademy.mahjongcalculator
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.service.quicksettings.Tile
@@ -15,8 +16,9 @@ class SettingActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewSettingHand: RecyclerView
     private lateinit var settingAdapter: TileAdapter
-
     private lateinit var binding: ActivitySettingBinding
+    private var doraCount: Int = 0
+    private var roundCount: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,5 +32,44 @@ class SettingActivity : AppCompatActivity() {
         settingAdapter = selectedTiles?.let { TileAdapter(it) }!!
         //handAdapter = TileAdapter(selectedTiles)
         binding.recyclerViewSettingHand.adapter = settingAdapter
+
+        binding.nextToResultButton.setOnClickListener{
+            val intent = Intent(this, CalculateActivity::class.java)
+            startActivity(intent)
+        }
+
+        binding.backToFirstButton.setOnClickListener{
+            finish()
+        }
+
+        binding.doraUpImageView.setOnClickListener{
+            doraCount++
+            updateDoraTextView()
+        }
+        binding.doraDownImageView.setOnClickListener{
+            if (doraCount > 0){
+                doraCount--
+                updateDoraTextView()
+            }
+        }
+
+        binding.upImageView.setOnClickListener{
+            roundCount++
+            updateRoundTextView()
+        }
+        binding.downImageView.setOnClickListener{
+            if (roundCount > 0){
+                roundCount--
+                updateRoundTextView()
+            }
+        }
+    }
+
+    private fun updateDoraTextView(){
+        binding.doraTextView.text = "ドラ$doraCount"
+    }
+
+    private fun updateRoundTextView(){
+        binding.roundTextView.text = "${roundCount}本場"
     }
 }
