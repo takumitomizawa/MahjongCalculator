@@ -2,6 +2,8 @@ package jp.techacademy.mahjongcalculator
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ArrayAdapter
+import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.techacademy.mahjongcalculator.databinding.ActivityCalculateBinding
@@ -24,6 +26,18 @@ class CalculateActivity : AppCompatActivity() {
         val selectedTiles = intent.getParcelableArrayListExtra<MahjongTile>("selectedTiles")
         resultAdapter = selectedTiles?.let { TileAdapter(it) }!!
         binding.recyclerViewResultHand.adapter = resultAdapter
+
+        // テスト用の役のデータリストを作成
+        val testYakuList = listOf("役1", "役2", "役3", "役4", "役5", "役6" ,"役7")
+
+        val linearLayout = binding.yakuList
+
+        for (yaku in testYakuList){
+            val textView = TextView(this)
+            textView.text = yaku
+
+            linearLayout.addView(textView)
+        }
 
     }
 }
