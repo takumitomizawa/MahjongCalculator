@@ -1,5 +1,6 @@
 package jp.techacademy.mahjongcalculator
 
+import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.ArrayAdapter
@@ -28,16 +29,20 @@ class CalculateActivity : AppCompatActivity() {
         binding.recyclerViewResultHand.adapter = resultAdapter
 
         // テスト用の役のデータリストを作成
-        val testYakuList = listOf("役1", "役2", "役3", "役4", "役5", "役6", "役7")
+        val testYakuList = YakuList.yakuList.map { it.name }
 
         val linearLayoutColumn1 = binding.yakuColumn1
         val linearLayoutColumn2 = binding.yakuColumn2
 
+        val textSizeInDp = 25
+
         for ((index, yaku) in testYakuList.withIndex()) {
             val textView = TextView(this)
             textView.text = yaku
+            textView.textSize = textSizeInDp.toFloat()
+            textView.setTextColor(Color.WHITE)
 
-            if (index % 2 == 0) {
+            if (index < 5) {
                 linearLayoutColumn1.addView(textView)
             } else {
                 linearLayoutColumn2.addView(textView)
