@@ -28,16 +28,20 @@ class CalculateActivity : AppCompatActivity() {
         binding.recyclerViewResultHand.adapter = resultAdapter
 
         // テスト用の役のデータリストを作成
-        val testYakuList = listOf("役1", "役2", "役3", "役4", "役5", "役6" ,"役7")
+        val testYakuList = listOf("役1", "役2", "役3", "役4", "役5", "役6", "役7")
 
-        val linearLayout = binding.yakuList
+        val linearLayoutColumn1 = binding.yakuColumn1
+        val linearLayoutColumn2 = binding.yakuColumn2
 
-        for (yaku in testYakuList){
+        for ((index, yaku) in testYakuList.withIndex()) {
             val textView = TextView(this)
             textView.text = yaku
 
-            linearLayout.addView(textView)
+            if (index % 2 == 0) {
+                linearLayoutColumn1.addView(textView)
+            } else {
+                linearLayoutColumn2.addView(textView)
+            }
         }
-
     }
 }
