@@ -30,14 +30,22 @@ class TitoitsuScoreCalculator(private val tiles: List<MahjongTile>) {
             val han = 2
 
             val basePoint = when(han){
-                2 -> if (isParent) 2400 else 1600
-                3 -> if (isParent) 4800 else 3200
-                4 -> if (isParent) 9600 else 6400
-                else -> if (isParent) 12000 else 8000
+                2 -> {
+                    if (!isParent) 2400 else 1600
+                }
+                3 -> {
+                    if (isParent) 4800 else 3200
+                }
+                4 -> {
+                    if (isParent) 9600 else 6400
+                }
+                else -> {
+                    if (isParent) 12000 else 8000
+                }
             }
 
             val finalPoints = if (isParent){
-                basePoint * (2.0.pow(han.toDouble())).toInt()
+                basePoint * 1.5.toInt()
             } else{
                 basePoint
             }
