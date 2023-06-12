@@ -140,6 +140,9 @@ class SettingActivity : AppCompatActivity() {
             // ツモかロンか判断するために使う
             intent.putExtra("goalCheck", binding.goalChangeSwitch.isChecked)
 
+            // ドラの数を判断するために使う
+            intent.putExtra("doraCount", doraCount)
+
             intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
             startActivity(intent)
         }

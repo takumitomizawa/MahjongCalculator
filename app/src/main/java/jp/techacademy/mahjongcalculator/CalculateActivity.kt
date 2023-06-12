@@ -37,6 +37,7 @@ class CalculateActivity : AppCompatActivity() {
         var textViewResult = binding.textViewResult
         val isKid = intent.getBooleanExtra("parentCheck", false)
         val isTsumo = intent.getBooleanExtra("goalCheck", false)
+        val isDoraCount = intent.getIntExtra("doraCount", 0)
 
         // SettingActivity.ktからCheckBoxの情報を取得
         val isReach = intent.getBooleanExtra("isReach", false)
@@ -78,7 +79,7 @@ class CalculateActivity : AppCompatActivity() {
             }
         }
 
-        val scoreResult = TitoitsuScoreCalculator(selectedTiles).calculateScore(isKid, isTsumo)
+        val scoreResult = TitoitsuScoreCalculator(selectedTiles).calculateScore(isKid, isTsumo, isDoraCount)
         val resultText = formatResult(scoreResult, isKid)
         textViewResult.text = resultText
     }
