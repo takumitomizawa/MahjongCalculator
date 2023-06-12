@@ -134,6 +134,12 @@ class SettingActivity : AppCompatActivity() {
                 intent.putExtra("isTihou",binding.checkBoxTihou.isChecked)
             }
 
+            // 親か子か判断するために使う
+            intent.putExtra("parentCheck", binding.parentChangeSwitch.isChecked)
+
+            // ツモかロンか判断するために使う
+            intent.putExtra("goalCheck", binding.goalChangeSwitch.isChecked)
+
             intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
             startActivity(intent)
         }

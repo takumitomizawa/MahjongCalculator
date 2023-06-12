@@ -35,6 +35,8 @@ class CalculateActivity : AppCompatActivity() {
         binding.recyclerViewResultHand.adapter = resultAdapter
 
         var textViewResult = binding.textViewResult
+        val isKid = intent.getBooleanExtra("parentCheck", false)
+        val isTsumo = intent.getBooleanExtra("goalCheck", false)
 
         // SettingActivity.ktからCheckBoxの情報を取得
         val isReach = intent.getBooleanExtra("isReach", false)
@@ -46,8 +48,6 @@ class CalculateActivity : AppCompatActivity() {
         val isHaitei = intent.getBooleanExtra("isHaitei", false)
         val isTenhou = intent.getBooleanExtra("isTenhou", false)
         val isTihou = intent.getBooleanExtra("isTihou", false)
-        val isParent = parentChangeSwitch.isChecked
-        val isTsumo = goalChangeSwitch.isChecked
 
         // テスト用の役のデータリストを作成
         //val yakuList = YakuList.yakuList.map { it.name }
@@ -78,13 +78,13 @@ class CalculateActivity : AppCompatActivity() {
             }
         }
 
-        val scoreResult = TitoitsuScoreCalculator(selectedTiles).calculateScore(isParent, isTsumo)
-        val resultText = formatResult(scoreResult, isParent)
+        val scoreResult = TitoitsuScoreCalculator(selectedTiles).calculateScore(isKid, isTsumo)
+        val resultText = formatResult(scoreResult, isKid)
         textViewResult.text = resultText
     }
 
-    private fun formatResult(scoreResult: ScoreResult, isParent: Boolean): String {
-        val role = if (isParent) "親" else "子"
+    private fun formatResult(scoreResult: ScoreResult, isKid: Boolean): String {
+        val role = if (!isKid) "親" else "子"
         return "$role${scoreResult.fu}符 ${scoreResult.han}翻 ${scoreResult.points}点"
     }
 
