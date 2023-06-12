@@ -28,16 +28,19 @@ class TitoitsuScoreCalculator(private val tiles: List<MahjongTile>) {
             // 七対子の場合の点数を計算
             val fu = 25
             val han = 2
-            val isParent = false
 
             val basePoint = when(han){
-                2 -> if (isParent) 1600 else 800
-                3 -> if (isParent) 3200 else 1600
-                4 -> if (isParent) 6400 else 3200
-                else -> if (isParent) 8000 else 8000
+                2 -> if (isParent) 2400 else 1600
+                3 -> if (isParent) 4800 else 3200
+                4 -> if (isParent) 9600 else 6400
+                else -> if (isParent) 12000 else 8000
             }
 
-            val finalPoints = basePoint * (2.0.pow(han.toDouble())).toInt()
+            val finalPoints = if (isParent){
+                basePoint * (2.0.pow(han.toDouble())).toInt()
+            } else{
+                basePoint
+            }
 
             CalculateActivity.ScoreResult(fu, han, finalPoints)
         } else{
