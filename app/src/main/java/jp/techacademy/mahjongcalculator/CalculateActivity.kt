@@ -5,9 +5,11 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
 import android.widget.ArrayAdapter
+import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.color.utilities.Score
 import jp.techacademy.mahjongcalculator.databinding.ActivityCalculateBinding
 import jp.techacademy.mahjongcalculator.databinding.ActivitySettingBinding
 import kotlin.math.pow
@@ -17,6 +19,8 @@ class CalculateActivity : AppCompatActivity() {
     private lateinit var recyclerViewResultHand: RecyclerView
     private lateinit var resultAdapter: TileAdapter
     private lateinit var binding: ActivityCalculateBinding
+    private lateinit var parentChangeSwitch: Switch
+    private lateinit var goalChangeSwitch: Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,6 +34,8 @@ class CalculateActivity : AppCompatActivity() {
         resultAdapter = selectedTiles?.let { TileAdapter(it) }!!
         binding.recyclerViewResultHand.adapter = resultAdapter
 
+        var textViewResult = binding.textViewResult
+
         // SettingActivity.ktからCheckBoxの情報を取得
         val isReach = intent.getBooleanExtra("isReach", false)
         val isDoubleReach = intent.getBooleanExtra("isDoubleReach", false)
@@ -40,6 +46,8 @@ class CalculateActivity : AppCompatActivity() {
         val isHaitei = intent.getBooleanExtra("isHaitei", false)
         val isTenhou = intent.getBooleanExtra("isTenhou", false)
         val isTihou = intent.getBooleanExtra("isTihou", false)
+        val isParent = parentChangeSwitch.isChecked
+        val isTsumo = goalChangeSwitch.isChecked
 
         // テスト用の役のデータリストを作成
         //val yakuList = YakuList.yakuList.map { it.name }
@@ -70,44 +78,15 @@ class CalculateActivity : AppCompatActivity() {
             }
         }
 
-        val score = calculateTitoitsuScore(selectedTiles)
+        val scoreResult = TitoitsuScoreCalculator(selectedTiles).calculateScore(isParent, isTsumo)
+        val resultText = formatResult(scoreResult, isParent)
+        textViewResult.text = resultText
     }
 
-    // 七対子の点数計算
-    private fun calculateTitoitsuScore(tiles: List<MahjongTile>): Int {
-        val tileCountMap = mutableMapOf<MahjongTile, Int>()
-
-        // 手牌を数える
-        for (tile in tiles){
-            if (tileCountMap.containsKey(tile)){
-                tileCountMap[tile] = tileCountMap[tile]!! + 1
-            } else {
-                tileCountMap[tile] = 1
-            }
-        }
-
-        // 対子が7セット揃っているかチェック
-        var pairCount = 0
-        for (count in tileCountMap.values){
-            if (count == 2){
-                pairCount++
-            }
-        }
-
-        // 七対子の場合の点数を計算
-        val fu = 25
-        val han = 2
-        val isParent = false
-
-        val basePoint = when(han){
-            2 -> if (isParent) 1600 else 800
-            3 -> if (isParent) 3200 else 1600
-            4 -> if (isParent) 6400 else 3200
-            else -> if (isParent) 8000 else 8000
-        }
-
-        val finalPoints = basePoint * (2.0.pow(han.toDouble())).toInt()
-
-        return finalPoints
+    private fun formatResult(scoreResult: ScoreResult, isParent: Boolean): String {
+        val role = if (isParent) "親" else "子"
+        return "$role${scoreResult.fu}符 ${scoreResult.han}翻 ${scoreResult.points}点"
     }
+
+    data class ScoreResult(val fu: Int, val han: Int, val points: Int)
 }
