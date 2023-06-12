@@ -106,20 +106,35 @@ class SettingActivity : AppCompatActivity() {
         binding.nextToResultButton.setOnClickListener {
             val intent = Intent(this, CalculateActivity::class.java)
 
-            // チェックボックスの状態をまとめる
-            val bundle = Bundle()
-            bundle.putBoolean("isReach", binding.checkBoxReach.isChecked)
-            bundle.putBoolean("isDoubleReach", binding.checkBoxDoubleReach.isChecked)
-            bundle.putBoolean("isOne", binding.checkBoxOne.isChecked)
-            bundle.putBoolean("isChankan", binding.checkBoxChankan.isChecked)
-            bundle.putBoolean("isRinshan", binding.checkBoxRinshan.isChecked)
-            bundle.putBoolean("isHoutei", binding.checkBoxHoutei.isChecked)
-            bundle.putBoolean("isHaitei", binding.checkBoxHaitei.isChecked)
-            bundle.putBoolean("isTenhou", binding.checkBoxTenhou.isChecked)
-            bundle.putBoolean("isTihou", binding.checkBoxTihou.isChecked)
+            if (binding.checkBoxReach.isChecked){
+                intent.putExtra("isReach", binding.checkBoxReach.isChecked)
+            }
+            if (binding.checkBoxDoubleReach.isChecked){
+                intent.putExtra("isDoubleReach", binding.checkBoxDoubleReach.isChecked)
+            }
+            if (binding.checkBoxOne.isChecked){
+                intent.putExtra("isOne", binding.checkBoxOne.isChecked)
+            }
+            if (binding.checkBoxChankan.isChecked){
+                intent.putExtra("isChankan", binding.checkBoxChankan.isChecked)
+            }
+            if (binding.checkBoxRinshan.isChecked){
+                intent.putExtra("isRinshan", binding.checkBoxRinshan.isChecked)
+            }
+            if (binding.checkBoxHoutei.isChecked){
+                intent.putExtra("isReach", binding.checkBoxHoutei.isChecked)
+            }
+            if (binding.checkBoxHaitei.isChecked){
+                intent.putExtra("isHaitei",binding.checkBoxHaitei.isChecked)
+            }
+            if (binding.checkBoxTenhou.isChecked){
+                intent.putExtra("isTenhou",binding.checkBoxTenhou.isChecked)
+            }
+            if (binding.checkBoxTihou.isChecked){
+                intent.putExtra("isTihou",binding.checkBoxTihou.isChecked)
+            }
 
             intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
-            intent.putExtras(bundle)
             startActivity(intent)
         }
 

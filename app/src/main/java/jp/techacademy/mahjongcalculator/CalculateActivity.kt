@@ -30,14 +30,14 @@ class CalculateActivity : AppCompatActivity() {
         binding.recyclerViewResultHand.adapter = resultAdapter
 
         // テスト用の役のデータリストを作成
-        val YakuList = YakuList.yakuList.map { it.name }
+        val yakuList = YakuList.yakuList.map { it.name }
 
         val linearLayoutColumn1 = binding.yakuColumn1
         val linearLayoutColumn2 = binding.yakuColumn2
 
         val textSizeInDp = 25
 
-        for ((index, yaku) in YakuList.withIndex()) {
+        for ((index, yaku) in yakuList.withIndex()) {
             val textView = TextView(this)
             textView.text = yaku
             textView.textSize = textSizeInDp.toFloat()
