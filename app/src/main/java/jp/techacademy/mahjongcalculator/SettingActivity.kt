@@ -31,28 +31,6 @@ class SettingActivity : AppCompatActivity() {
         settingAdapter = selectedTiles?.let { TileAdapter(it) }!!
         binding.recyclerViewSettingHand.adapter = settingAdapter
 
-        // ドラッグアンドドロップの処理を追加
-        val itemTouchHelper = ItemTouchHelper(object : ItemTouchHelper.SimpleCallback(
-            ItemTouchHelper.UP or ItemTouchHelper.DOWN, 0
-        ){
-            override fun onMove(
-                recyclerView: RecyclerView,
-                viewHolder: RecyclerView.ViewHolder,
-                target: RecyclerView.ViewHolder
-            ): Boolean{
-                // アイテムをドラッグした場合の処理
-                val fromPosition = viewHolder.adapterPosition
-                val toPosition = target.adapterPosition
-                settingAdapter.swapItems(fromPosition, toPosition)
-                return true
-            }
-
-            override fun onSwiped(viewHolder: RecyclerView.ViewHolder, direction: Int) {
-                // 今回はスワイプ処理を実装しない
-            }
-        })
-        itemTouchHelper.attachToRecyclerView(recyclerViewSettingHand)
-
         // 初期状態でRadioButtonを東でセットしておく
         binding.eastRadioButton.isChecked = true
         binding.eastOwnRadioButton.isChecked = true

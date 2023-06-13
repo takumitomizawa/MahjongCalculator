@@ -13,17 +13,9 @@ class TileAdapter(
 ) : RecyclerView.Adapter<TileAdapter.TileViewHolder>() {
 
     private var onTileClickListener: ((MahjongTile) -> Unit)? = null
-    private val selectedTiles = mutableListOf<MahjongTile>()
 
     fun setOnTileClickListener(listener: (MahjongTile) -> Unit){
         onTileClickListener = listener
-    }
-
-    fun swapItems(fromPosition: Int, toPosition: Int) {
-        if (fromPosition in 0 until selectedTiles.size && toPosition in 0 until selectedTiles.size) {
-            Collections.swap(selectedTiles,fromPosition, toPosition)
-            notifyItemMoved(fromPosition, toPosition)
-        }
     }
 
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) {
