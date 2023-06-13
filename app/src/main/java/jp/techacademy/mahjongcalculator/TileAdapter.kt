@@ -20,6 +20,7 @@ class TileAdapter(
 
     override fun onBindViewHolder(holder: TileViewHolder, position: Int) {
         holder.tileImageView.setImageResource(tileList[position].imageResourceId)
+
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
