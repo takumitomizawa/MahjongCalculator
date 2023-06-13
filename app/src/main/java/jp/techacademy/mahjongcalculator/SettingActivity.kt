@@ -31,6 +31,17 @@ class SettingActivity : AppCompatActivity() {
         settingAdapter = selectedTiles?.let { SettingTileAdapter(it) }!!
         binding.recyclerViewSettingHand.adapter = settingAdapter
 
+        settingAdapter.setOnTileClickListener { tile ->
+            // クリックイベントの処理
+            // 赤枠の表示処理を行う
+            selectedTiles?.let {
+                val position = it.indexOf(tile)
+                if (position != -1) {
+                    settingAdapter.setSelectedPosition(position)
+                }
+            }
+        }
+
         // 初期状態でRadioButtonを東でセットしておく
         binding.eastRadioButton.isChecked = true
         binding.eastOwnRadioButton.isChecked = true
@@ -178,6 +189,8 @@ class SettingActivity : AppCompatActivity() {
             binding.westOwnRadioButton.isChecked = false
             binding.eastOwnRadioButton.isChecked = false
         }
+
+
         // ここまで各ボタンが押された時の処理
     }
 

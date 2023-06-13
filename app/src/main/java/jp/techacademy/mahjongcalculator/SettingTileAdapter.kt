@@ -44,6 +44,16 @@ class SettingTileAdapter(
         fun bind(tile: MahjongTile, position: Int) {
             tileImageView.setImageResource(tile.imageResourceId)
 
+            tileImageView.setOnClickListener{
+                val position = adapterPosition
+                if (position != RecyclerView.NO_POSITION) {
+                    selectedPosition = position
+                    notifyDataSetChanged()
+
+                    onTileClickListener?.invoke(tileList[position])
+                }
+            }
+
             // 選択された牌の位置によって背景を変更
             if (position == selectedPosition) {
                 tileImageView.setBackgroundResource(R.drawable.tile_border)
@@ -51,5 +61,9 @@ class SettingTileAdapter(
                 tileImageView.background = null
             }
         }
+    }
+    fun setSelectedPosition(position: Int) {
+        selectedPosition = position
+        notifyDataSetChanged()
     }
 }
