@@ -29,10 +29,6 @@ class TileAdapter(
     }
 
     override fun getItemCount() = tileList.size
-    fun getSelectedTiles(): List<MahjongTile> {
-
-        return selectedTiles
-    }
 
     inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val tileImageView: ImageView = itemView.findViewById(R.id.imageViewTile)

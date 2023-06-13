@@ -3,6 +3,7 @@ package jp.techacademy.mahjongcalculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import jp.techacademy.mahjongcalculator.databinding.ActivitySettingBinding
@@ -14,6 +15,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySettingBinding
     private var doraCount: Int = 0
     private var roundCount: Int = 0
+    private var selectedTiles: ArrayList<MahjongTile>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -104,47 +106,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.nextToResultButton.setOnClickListener {
-            val intent = Intent(this, CalculateActivity::class.java)
-
-            if (binding.checkBoxReach.isChecked){
-                intent.putExtra("isReach", binding.checkBoxReach.isChecked)
-            }
-            if (binding.checkBoxDoubleReach.isChecked){
-                intent.putExtra("isDoubleReach", binding.checkBoxDoubleReach.isChecked)
-            }
-            if (binding.checkBoxOne.isChecked){
-                intent.putExtra("isOne", binding.checkBoxOne.isChecked)
-            }
-            if (binding.checkBoxChankan.isChecked){
-                intent.putExtra("isChankan", binding.checkBoxChankan.isChecked)
-            }
-            if (binding.checkBoxRinshan.isChecked){
-                intent.putExtra("isRinshan", binding.checkBoxRinshan.isChecked)
-            }
-            if (binding.checkBoxHoutei.isChecked){
-                intent.putExtra("isReach", binding.checkBoxHoutei.isChecked)
-            }
-            if (binding.checkBoxHaitei.isChecked){
-                intent.putExtra("isHaitei",binding.checkBoxHaitei.isChecked)
-            }
-            if (binding.checkBoxTenhou.isChecked){
-                intent.putExtra("isTenhou",binding.checkBoxTenhou.isChecked)
-            }
-            if (binding.checkBoxTihou.isChecked){
-                intent.putExtra("isTihou",binding.checkBoxTihou.isChecked)
-            }
-
-            // 親か子か判断するために使う
-            intent.putExtra("parentCheck", binding.parentChangeSwitch.isChecked)
-
-            // ツモかロンか判断するために使う
-            intent.putExtra("goalCheck", binding.goalChangeSwitch.isChecked)
-
-            // ドラの数を判断するために使う
-            intent.putExtra("doraCount", doraCount)
-
-            intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
-            startActivity(intent)
+            showConfirmationDialog()
         }
 
         binding.backToFirstButton.setOnClickListener {
@@ -214,8 +176,76 @@ class SettingActivity : AppCompatActivity() {
             binding.westOwnRadioButton.isChecked = false
             binding.eastOwnRadioButton.isChecked = false
         }
-
         // ここまで各ボタンが押された時の処理
+    }
+
+    private fun showConfirmationDialog(){
+        val dialogBuilder = AlertDialog.Builder(this)
+        dialogBuilder.setTitle("あがり牌の設定")
+        dialogBuilder.setMessage("これをあがり牌として設定してよろしいですか？")
+        dialogBuilder.setPositiveButton("OK") { dialog, whitch ->
+            navigateToCalculateActivity()
+            dialog.dismiss()
+        }
+        dialogBuilder.setNegativeButton("キャンセル") { dialog, whitch ->
+            dialog.dismiss()
+        }
+
+        val dialogView = layoutInflater.inflate(R.layout.dialog_agari_tiles, null)
+        val dialogRecyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerViewAgariTiles)
+        dialogRecyclerView.layoutManager = GridLayoutManager(this, 14)
+        val agariTilesAdapter = selectedTiles?.let { TileAdapter(it)}
+        dialogRecyclerView.adapter = agariTilesAdapter
+
+        dialogBuilder.setView(dialogView)
+        val dialog = dialogBuilder.create()
+        dialog.show()
+    }
+
+    private fun navigateToCalculateActivity(){
+        selectedTiles = intent.getParcelableArrayListExtra<MahjongTile>("selectedTiles")
+
+        val intent = Intent(this, CalculateActivity::class.java)
+
+        if (binding.checkBoxReach.isChecked){
+            intent.putExtra("isReach", binding.checkBoxReach.isChecked)
+        }
+        if (binding.checkBoxDoubleReach.isChecked){
+            intent.putExtra("isDoubleReach", binding.checkBoxDoubleReach.isChecked)
+        }
+        if (binding.checkBoxOne.isChecked){
+            intent.putExtra("isOne", binding.checkBoxOne.isChecked)
+        }
+        if (binding.checkBoxChankan.isChecked){
+            intent.putExtra("isChankan", binding.checkBoxChankan.isChecked)
+        }
+        if (binding.checkBoxRinshan.isChecked){
+            intent.putExtra("isRinshan", binding.checkBoxRinshan.isChecked)
+        }
+        if (binding.checkBoxHoutei.isChecked){
+            intent.putExtra("isReach", binding.checkBoxHoutei.isChecked)
+        }
+        if (binding.checkBoxHaitei.isChecked){
+            intent.putExtra("isHaitei",binding.checkBoxHaitei.isChecked)
+        }
+        if (binding.checkBoxTenhou.isChecked){
+            intent.putExtra("isTenhou",binding.checkBoxTenhou.isChecked)
+        }
+        if (binding.checkBoxTihou.isChecked){
+            intent.putExtra("isTihou",binding.checkBoxTihou.isChecked)
+        }
+
+        // 親か子か判断するために使う
+        intent.putExtra("parentCheck", binding.parentChangeSwitch.isChecked)
+
+        // ツモかロンか判断するために使う
+        intent.putExtra("goalCheck", binding.goalChangeSwitch.isChecked)
+
+        // ドラの数を判断するために使う
+        intent.putExtra("doraCount", doraCount)
+
+        intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
+        startActivity(intent)
     }
 
     private fun updateDoraTextView(){
@@ -225,4 +255,5 @@ class SettingActivity : AppCompatActivity() {
     private fun updateRoundTextView(){
         binding.roundTextView.text = "${roundCount}本場"
     }
+
 }
