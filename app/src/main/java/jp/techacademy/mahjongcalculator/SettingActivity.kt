@@ -179,7 +179,6 @@ class SettingActivity : AppCompatActivity() {
             binding.eastOwnRadioButton.isChecked = false
         }
         // ここまで各ボタンが押された時の処理
-
     }
 
     private fun navigateToCalculateActivity(){
