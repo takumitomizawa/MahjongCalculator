@@ -106,7 +106,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.nextToResultButton.setOnClickListener {
-            showConfirmationDialog()
+            navigateToCalculateActivity()
         }
 
         binding.backToFirstButton.setOnClickListener {
@@ -177,29 +177,6 @@ class SettingActivity : AppCompatActivity() {
             binding.eastOwnRadioButton.isChecked = false
         }
         // ここまで各ボタンが押された時の処理
-    }
-
-    private fun showConfirmationDialog(){
-        val dialogBuilder = AlertDialog.Builder(this)
-        dialogBuilder.setTitle("あがり牌の設定")
-        dialogBuilder.setMessage("これをあがり牌として設定してよろしいですか？")
-        dialogBuilder.setPositiveButton("OK") { dialog, whitch ->
-            navigateToCalculateActivity()
-            dialog.dismiss()
-        }
-        dialogBuilder.setNegativeButton("キャンセル") { dialog, whitch ->
-            dialog.dismiss()
-        }
-
-        val dialogView = layoutInflater.inflate(R.layout.dialog_agari_tiles, null)
-        val dialogRecyclerView = dialogView.findViewById<RecyclerView>(R.id.recyclerViewAgariTiles)
-        dialogRecyclerView.layoutManager = GridLayoutManager(this, 14)
-        val agariTilesAdapter = selectedTiles?.let { TileAdapter(it)}
-        dialogRecyclerView.adapter = agariTilesAdapter
-
-        dialogBuilder.setView(dialogView)
-        val dialog = dialogBuilder.create()
-        dialog.show()
     }
 
     private fun navigateToCalculateActivity(){

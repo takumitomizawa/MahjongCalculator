@@ -11,11 +11,24 @@
         android:id="@+id/recyclerViewSettingHand"
         android:layout_width="match_parent"
         android:layout_height="70dp"
-        android:layout_marginStart="50dp"
-        android:layout_marginEnd="50dp"
+        android:layout_marginEnd="100dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         tools:ignore="MissingConstraints" />
+
+    <FrameLayout
+        android:id="@+id/dropArea"
+        android:layout_width="100dp"
+        android:layout_height="70dp"
+        app:layout_constraintStart_toEndOf="@+id/recyclerViewSettingHand">
+
+        <View
+            android:id="@+id/goalTileImageView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_background"/>
+
+    </FrameLayout>
 
     <TextView
         android:id="@+id/parentModeText"
