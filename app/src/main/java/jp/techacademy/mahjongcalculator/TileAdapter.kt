@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import jp.techacademy.mahjongcalculator.databinding.ItemTileBinding
 import java.util.*
 
 
@@ -13,6 +14,7 @@ class TileAdapter(
 ) : RecyclerView.Adapter<TileAdapter.TileViewHolder>() {
 
     private var onTileClickListener: ((MahjongTile) -> Unit)? = null
+    private var selectedPosition: Int = RecyclerView.NO_POSITION
 
     fun setOnTileClickListener(listener: (MahjongTile) -> Unit){
         onTileClickListener = listener
@@ -31,7 +33,7 @@ class TileAdapter(
 
     override fun getItemCount() = tileList.size
 
-    inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    /*inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val tileImageView: ImageView = itemView.findViewById(R.id.imageViewTile)
 
         init {
@@ -41,6 +43,28 @@ class TileAdapter(
                     val tile = tileList[position]
                     onTileClickListener?.invoke(tile)
                 }
+            }
+        }
+    }*/
+
+    inner class TileViewHolder(private val binding: ItemTileBinding) : RecyclerView.ViewHolder(binding.root){
+        fun bind(tile: MahjongTile, position: Int){
+            binding.imageViewTile.setImageResource(tile.imageResourceId)
+
+            // 選択された牌の位置によって背景を変更
+            if (position == selectedPosition) {
+                binding.imageViewTile.setBackgroundResource(R.drawable.tile_border)
+            } else {
+                binding.imageViewTile.background = null
+            }
+
+            // クリックイベントのリスナーを設定
+            binding.imageViewTile.setOnClickListener{
+                // 選択された牌の位置を更新
+                selectedPosition = adapterPosition
+
+                // RecyclerViewを更新
+                notifyDataSetChanged()
             }
         }
     }
