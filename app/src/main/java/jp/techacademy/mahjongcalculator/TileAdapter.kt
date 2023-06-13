@@ -1,5 +1,6 @@
 package jp.techacademy.mahjongcalculator
 
+import android.text.Layout
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,14 +27,13 @@ class TileAdapter(
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): TileViewHolder {
-        val itemView =
-            LayoutInflater.from(parent.context).inflate(R.layout.item_tile, parent, false)
+        val itemView = LayoutInflater.from(parent.context).inflate(R.layout.item_tile, parent, false)
         return TileViewHolder(itemView)
     }
 
     override fun getItemCount() = tileList.size
 
-    /*inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
+    inner class TileViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val tileImageView: ImageView = itemView.findViewById(R.id.imageViewTile)
 
         init {
@@ -45,9 +45,10 @@ class TileAdapter(
                 }
             }
         }
-    }*/
+    }
 
-    inner class TileViewHolder(private val binding: ItemTileBinding) : RecyclerView.ViewHolder(binding.root){
+    /*inner class TileViewHolder(private val binding: ItemTileBinding) : RecyclerView.ViewHolder(binding.root){
+        val tileImageView: ImageView = itemView.findViewById(R.id.imageViewTile)
         fun bind(tile: MahjongTile, position: Int){
             binding.imageViewTile.setImageResource(tile.imageResourceId)
 
@@ -67,5 +68,5 @@ class TileAdapter(
                 notifyDataSetChanged()
             }
         }
-    }
+    }*/
 }

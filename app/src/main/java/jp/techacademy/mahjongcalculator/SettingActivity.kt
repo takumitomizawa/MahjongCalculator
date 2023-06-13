@@ -13,7 +13,7 @@ import jp.techacademy.mahjongcalculator.databinding.ActivitySettingBinding
 class SettingActivity : AppCompatActivity() {
 
     private lateinit var recyclerViewSettingHand: RecyclerView
-    private lateinit var settingAdapter: TileAdapter
+    private lateinit var settingAdapter: SettingTileAdapter
     private lateinit var binding: ActivitySettingBinding
     private var doraCount: Int = 0
     private var roundCount: Int = 0
@@ -28,7 +28,7 @@ class SettingActivity : AppCompatActivity() {
         recyclerViewSettingHand.layoutManager = GridLayoutManager(this, 14)
 
         val selectedTiles = intent.getParcelableArrayListExtra<MahjongTile>("selectedTiles")
-        settingAdapter = selectedTiles?.let { TileAdapter(it) }!!
+        settingAdapter = selectedTiles?.let { SettingTileAdapter(it) }!!
         binding.recyclerViewSettingHand.adapter = settingAdapter
 
         // 初期状態でRadioButtonを東でセットしておく
@@ -179,6 +179,7 @@ class SettingActivity : AppCompatActivity() {
             binding.eastOwnRadioButton.isChecked = false
         }
         // ここまで各ボタンが押された時の処理
+
     }
 
     private fun navigateToCalculateActivity(){
