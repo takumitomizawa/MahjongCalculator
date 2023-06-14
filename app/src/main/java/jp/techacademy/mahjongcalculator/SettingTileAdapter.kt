@@ -12,9 +12,11 @@ class SettingTileAdapter(
 
     private var selectedPosition: Int = RecyclerView.NO_POSITION
     private var onTileClickListener: ((MahjongTile) -> Unit)? = null
+    private var selectedTile: MahjongTile? = null
 
     fun setOnTileClickListener(listener: (MahjongTile) -> Unit) {
         onTileClickListener = listener
+        selectedTile = null
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): SettingTileViewHolder {
@@ -44,6 +46,13 @@ class SettingTileAdapter(
         fun bind(tile: MahjongTile, position: Int) {
             tileImageView.setImageResource(tile.imageResourceId)
 
+            // 選択された牌の位置によって背景を変更
+            if (position == selectedPosition) {
+                tileImageView.setBackgroundResource(R.drawable.tile_border)
+            } else {
+                tileImageView.background = null
+            }
+
             tileImageView.setOnClickListener{
                 val position = adapterPosition
                 if (position != RecyclerView.NO_POSITION) {
@@ -54,12 +63,6 @@ class SettingTileAdapter(
                 }
             }
 
-            // 選択された牌の位置によって背景を変更
-            if (position == selectedPosition) {
-                tileImageView.setBackgroundResource(R.drawable.tile_border)
-            } else {
-                tileImageView.background = null
-            }
         }
     }
     fun setSelectedPosition(position: Int) {

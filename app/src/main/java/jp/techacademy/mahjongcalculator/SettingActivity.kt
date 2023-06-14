@@ -3,6 +3,7 @@ package jp.techacademy.mahjongcalculator
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -18,6 +19,7 @@ class SettingActivity : AppCompatActivity() {
     private var doraCount: Int = 0
     private var roundCount: Int = 0
     private var selectedTiles: ArrayList<MahjongTile>? = null
+    private var selectedPosition: Int = RecyclerView.NO_POSITION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -197,6 +199,8 @@ class SettingActivity : AppCompatActivity() {
     private fun navigateToCalculateActivity(){
         selectedTiles = intent.getParcelableArrayListExtra<MahjongTile>("selectedTiles")
 
+        //val selectedUpTiles = selectedTiles?.get(selectedPosition)
+
         val intent = Intent(this, CalculateActivity::class.java)
 
         if (binding.checkBoxReach.isChecked){
@@ -235,6 +239,10 @@ class SettingActivity : AppCompatActivity() {
 
         // ドラの数を判断するために使う
         intent.putExtra("doraCount", doraCount)
+
+        // あがり牌が何か判断するために使う
+        /*Log.d("test", selectedUpTiles.toString())
+        intent.putExtra("selectedUpTile", selectedUpTiles)*/
 
         intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
         startActivity(intent)
