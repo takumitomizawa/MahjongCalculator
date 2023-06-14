@@ -1,10 +1,8 @@
 package jp.techacademy.mahjongcalculator
 
-import kotlin.math.pow
+class PinfuScoreCalculator(private val tiles: List<MahjongTile>) {
 
-class TitoitsuScoreCalculator(private val tiles: List<MahjongTile>) {
-
-    fun calculateScore(isParent: Boolean, isTsumo: Boolean, doraCount: Int): CalculateActivity.ScoreResult {
+    fun calculateScore(isKid: Boolean, isTsumo: Boolean, doraCount: Int): CalculateActivity.ScoreResult {
         val tileCountMap = mutableMapOf<MahjongTile, Int>()
 
         // 手牌を数える
@@ -34,26 +32,21 @@ class TitoitsuScoreCalculator(private val tiles: List<MahjongTile>) {
 
             val basePoint = when(han){
                 2 -> {
-                    if (!isParent) 2400 else 1600
+                    if (!isKid) 2400 else 1600
                 }
                 3 -> {
-                    if (!isParent) 4800 else 3200
+                    if (!isKid) 4800 else 3200
                 }
                 4 -> {
-                    if (!isParent) 9600 else 6400
+                    if (!isKid) 9600 else 6400
                 }
                 else -> {
-                    if (!isParent) 12000 else 8000
+                    if (!isKid) 12000 else 8000
                 }
             }
 
-            val finalPoints = if (isParent){
-                basePoint * 1.5.toInt()
-            } else{
-                basePoint
-            }
 
-            CalculateActivity.ScoreResult(fu, han, finalPoints)
+            CalculateActivity.ScoreResult(fu, han, basePoint)
         } else{
             CalculateActivity.ScoreResult(0, 0, 0)
         }

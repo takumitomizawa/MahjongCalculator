@@ -3,17 +3,11 @@ package jp.techacademy.mahjongcalculator
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
-import android.view.View
-import android.widget.ArrayAdapter
 import android.widget.Switch
 import android.widget.TextView
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.material.color.utilities.Score
 import jp.techacademy.mahjongcalculator.databinding.ActivityCalculateBinding
-import jp.techacademy.mahjongcalculator.databinding.ActivitySettingBinding
-import kotlin.math.pow
 
 class CalculateActivity : AppCompatActivity() {
 
@@ -52,8 +46,6 @@ class CalculateActivity : AppCompatActivity() {
         val isTihou = intent.getBooleanExtra("isTihou", false)
         val isSelectedUpTile = intent.getParcelableArrayListExtra<MahjongTile>("selectedUpTile")
 
-        // テスト用の役のデータリストを作成
-        //val yakuList = YakuList.yakuList.map { it.name }
         val yakuList = mutableListOf<String>()
 
         // 受け取った各CheckBoxの状態に応じて処理を行う
@@ -81,9 +73,60 @@ class CalculateActivity : AppCompatActivity() {
             }
         }
 
-        val scoreResult = TitoitsuScoreCalculator(selectedTiles).calculateScore(isKid, isTsumo, isDoraCount)
+        val scoreResult = ScoreCalculator(selectedTiles).calculateScore(isKid, isTsumo, isDoraCount)
         val resultText = formatResult(scoreResult, isKid)
         textViewResult.text = resultText
+    }
+
+    private fun isTitoitsu(tiles: List<MahjongTile>): ScoreResult {
+        val tileCountMap = mutableMapOf<MahjongTile, Int>()
+        val isKid = intent.getBooleanExtra("parentCheck", false)
+        val isDoraCount = intent.getIntExtra("doraCount", 0)
+
+        // 手牌を数える
+        for (tile in tiles){
+            if (tileCountMap.containsKey(tile)){
+                tileCountMap[tile] = tileCountMap[tile]!! + 1
+            } else {
+                tileCountMap[tile] = 1
+            }
+        }
+
+        // 対子が7セット揃っているかチェック
+        var pairCount = 0
+        for (count in tileCountMap.values){
+            if (count == 2){
+                pairCount++
+            }
+        }
+
+        return if (pairCount == 7){
+            // 七対子の場合の点数を計算
+            val fu = 25
+            var han = 2
+
+            // ドラの数に応じて翻数を調整する
+            han += isDoraCount
+
+            val basePoint = when(han){
+                2 -> {
+                    if (!isKid) 2400 else 1600
+                }
+                3 -> {
+                    if (!isKid) 4800 else 3200
+                }
+                4 -> {
+                    if (!isKid) 9600 else 6400
+                }
+                else -> {
+                    if (!isKid) 12000 else 8000
+                }
+            }
+
+            CalculateActivity.ScoreResult(fu, han, basePoint)
+        } else{
+            CalculateActivity.ScoreResult(0, 0, 0)
+        }
     }
 
     private fun formatResult(scoreResult: ScoreResult, isKid: Boolean): String {
