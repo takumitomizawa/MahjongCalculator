@@ -31,7 +31,7 @@ class CalculateActivity : AppCompatActivity() {
 
         var textViewResult = binding.textViewResult
         val isKid = intent.getBooleanExtra("parentCheck", false)
-        val isTsumo = intent.getBooleanExtra("goalCheck", false)
+        val isRon = intent.getBooleanExtra("goalCheck", false)
         val isDoraCount = intent.getIntExtra("doraCount", 0)
 
         // SettingActivity.ktからCheckBoxの情報を取得
@@ -47,13 +47,23 @@ class CalculateActivity : AppCompatActivity() {
         val isSelectedUpTile = intent.getParcelableArrayListExtra<MahjongTile>("selectedUpTile")
 
         val yakuList = mutableListOf<String>()
+        val selectedYaku = SelectedYaku(selectedTiles)
 
         // 受け取った各CheckBoxの状態に応じて処理を行う
         if (isReach){
-            yakuList.add("リーチ")
+            yakuList.add(YakuList.REACH)
         }
         if (isDoubleReach){
-            yakuList.add("ダブルリーチ")
+            yakuList.add(YakuList.DOUBLEREACH)
+        }
+        if (selectedYaku.isTitoitsu()) {
+            yakuList.add(YakuList.TITOITSU)
+        }
+        if (selectedYaku.isPinfu()) {
+            yakuList.add(YakuList.PINFU)
+        }
+        if (!isRon){
+            yakuList.add(YakuList.TSUMO)
         }
 
         val linearLayoutColumn1 = binding.yakuColumn1
@@ -73,60 +83,9 @@ class CalculateActivity : AppCompatActivity() {
             }
         }
 
-        val scoreResult = ScoreCalculator(selectedTiles).calculateScore(isKid, isTsumo, isDoraCount)
+        val scoreResult = ScoreCalculator(selectedTiles).calculateScore(isKid, isRon, isDoraCount)
         val resultText = formatResult(scoreResult, isKid)
         textViewResult.text = resultText
-    }
-
-    private fun isTitoitsu(tiles: List<MahjongTile>): ScoreResult {
-        val tileCountMap = mutableMapOf<MahjongTile, Int>()
-        val isKid = intent.getBooleanExtra("parentCheck", false)
-        val isDoraCount = intent.getIntExtra("doraCount", 0)
-
-        // 手牌を数える
-        for (tile in tiles){
-            if (tileCountMap.containsKey(tile)){
-                tileCountMap[tile] = tileCountMap[tile]!! + 1
-            } else {
-                tileCountMap[tile] = 1
-            }
-        }
-
-        // 対子が7セット揃っているかチェック
-        var pairCount = 0
-        for (count in tileCountMap.values){
-            if (count == 2){
-                pairCount++
-            }
-        }
-
-        return if (pairCount == 7){
-            // 七対子の場合の点数を計算
-            val fu = 25
-            var han = 2
-
-            // ドラの数に応じて翻数を調整する
-            han += isDoraCount
-
-            val basePoint = when(han){
-                2 -> {
-                    if (!isKid) 2400 else 1600
-                }
-                3 -> {
-                    if (!isKid) 4800 else 3200
-                }
-                4 -> {
-                    if (!isKid) 9600 else 6400
-                }
-                else -> {
-                    if (!isKid) 12000 else 8000
-                }
-            }
-
-            CalculateActivity.ScoreResult(fu, han, basePoint)
-        } else{
-            CalculateActivity.ScoreResult(0, 0, 0)
-        }
     }
 
     private fun formatResult(scoreResult: ScoreResult, isKid: Boolean): String {
