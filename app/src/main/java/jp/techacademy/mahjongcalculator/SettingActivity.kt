@@ -16,10 +16,10 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var recyclerViewSettingHand: RecyclerView
     private lateinit var settingAdapter: SettingTileAdapter
     private lateinit var binding: ActivitySettingBinding
+    private lateinit var selectedTile: MahjongTile
     private var doraCount: Int = 0
     private var roundCount: Int = 0
     private var selectedTiles: ArrayList<MahjongTile>? = null
-    private var selectedPosition: Int = RecyclerView.NO_POSITION
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,7 +36,7 @@ class SettingActivity : AppCompatActivity() {
         settingAdapter.setOnTileClickListener { tile ->
             // クリックイベントの処理
             // 赤枠の表示処理を行う
-            selectedTiles?.let {
+            selectedTiles.let {
                 val position = it.indexOf(tile)
                 if (position != -1) {
                     settingAdapter.setSelectedPosition(position)
@@ -192,14 +192,20 @@ class SettingActivity : AppCompatActivity() {
             binding.eastOwnRadioButton.isChecked = false
         }
 
+        settingAdapter.setOnTileClickListener { tile ->
+            selectedTile = tile
+            val position = selectedTiles?.indexOf(tile) ?: -1
+            if (position != -1) {
+                settingAdapter.setSelectedPosition(position)
+            }
+        }
+
 
         // ここまで各ボタンが押された時の処理
     }
 
     private fun navigateToCalculateActivity(){
         selectedTiles = intent.getParcelableArrayListExtra<MahjongTile>("selectedTiles")
-
-        //val selectedUpTiles = selectedTiles?.get(selectedPosition)
 
         val intent = Intent(this, CalculateActivity::class.java)
 
@@ -241,8 +247,11 @@ class SettingActivity : AppCompatActivity() {
         intent.putExtra("doraCount", doraCount)
 
         // あがり牌が何か判断するために使う
-        /*Log.d("test", selectedUpTiles.toString())
-        intent.putExtra("selectedUpTile", selectedUpTiles)*/
+        val selectedUpTiles = ArrayList<MahjongTile>()
+        // 牌のデータが配列なので、ArrayListに格納してから送る
+        selectedUpTiles.add(selectedTile)
+
+        intent.putParcelableArrayListExtra("selectedUpTile", ArrayList(selectedUpTiles))
 
         intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
         startActivity(intent)

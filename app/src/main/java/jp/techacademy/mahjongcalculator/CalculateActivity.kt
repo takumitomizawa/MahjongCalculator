@@ -3,6 +3,7 @@ package jp.techacademy.mahjongcalculator
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Switch
@@ -49,6 +50,7 @@ class CalculateActivity : AppCompatActivity() {
         val isHaitei = intent.getBooleanExtra("isHaitei", false)
         val isTenhou = intent.getBooleanExtra("isTenhou", false)
         val isTihou = intent.getBooleanExtra("isTihou", false)
+        val isSelectedUpTile = intent.getParcelableArrayListExtra<MahjongTile>("selectedUpTile")
 
         // テスト用の役のデータリストを作成
         //val yakuList = YakuList.yakuList.map { it.name }
