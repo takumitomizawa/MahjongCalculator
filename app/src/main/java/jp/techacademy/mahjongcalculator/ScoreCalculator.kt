@@ -2,7 +2,7 @@ package jp.techacademy.mahjongcalculator
 
 class ScoreCalculator(private val tiles: List<MahjongTile>) {
 
-    fun calculateScore(isKid: Boolean, isTsumo: Boolean, doraCount: Int): CalculateActivity.ScoreResult {
+    fun calculateScore(isKid: Boolean, isTsumo: Boolean, doraCount: Int, isReach: Boolean): CalculateActivity.ScoreResult {
         val selectedYaku = SelectedYaku(tiles)
         val yakuList = mutableListOf<String>()
 
@@ -89,5 +89,10 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
             }
             CalculateActivity.ScoreResult(fu, han, baseTsumoPoint)
         }
+    }
+
+    private fun checkReach(): Boolean{
+        var isReach = true
+        return isReach
     }
 }

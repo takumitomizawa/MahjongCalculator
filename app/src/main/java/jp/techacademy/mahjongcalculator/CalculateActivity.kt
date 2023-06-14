@@ -83,15 +83,16 @@ class CalculateActivity : AppCompatActivity() {
             }
         }
 
-        val scoreResult = ScoreCalculator(selectedTiles).calculateScore(isKid, isRon, isDoraCount)
+        val scoreResult = ScoreCalculator(selectedTiles).calculateScore(isKid, isRon, isDoraCount, isReach)
         val resultText = formatResult(scoreResult, isKid)
         textViewResult.text = resultText
     }
 
     private fun formatResult(scoreResult: ScoreResult, isKid: Boolean): String {
         val role = if (!isKid) "親" else "子"
+        val isReach = intent.getBooleanExtra("isReach", false)
         return "$role${scoreResult.fu}符 ${scoreResult.han}翻 ${scoreResult.points}点"
     }
 
-    data class ScoreResult(val fu: Int, val han: Int, val points: Int)
+    data class ScoreResult(val fu: Int, var han: Int, val points: Int)
 }
