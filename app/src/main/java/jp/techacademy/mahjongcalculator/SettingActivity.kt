@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -16,7 +17,7 @@ class SettingActivity : AppCompatActivity() {
     private lateinit var recyclerViewSettingHand: RecyclerView
     private lateinit var settingAdapter: SettingTileAdapter
     private lateinit var binding: ActivitySettingBinding
-    private lateinit var selectedTile: MahjongTile
+    private var selectedTile: MahjongTile? = null
     private var doraCount: Int = 0
     private var roundCount: Int = 0
     private var selectedTiles: ArrayList<MahjongTile>? = null
@@ -121,7 +122,11 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.nextToResultButton.setOnClickListener {
-            navigateToCalculateActivity()
+            if (selectedTile != null){
+                navigateToCalculateActivity()
+            } else {
+                Toast.makeText(applicationContext, "あがり牌を選択してください。", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.backToFirstButton.setOnClickListener {
@@ -194,7 +199,7 @@ class SettingActivity : AppCompatActivity() {
 
         settingAdapter.setOnTileClickListener { tile ->
             selectedTile = tile
-            val position = selectedTiles?.indexOf(tile) ?: -1
+            val position = selectedTiles.indexOf(tile)
             if (position != -1) {
                 settingAdapter.setSelectedPosition(position)
             }
@@ -249,7 +254,7 @@ class SettingActivity : AppCompatActivity() {
         // あがり牌が何か判断するために使う
         val selectedUpTiles = ArrayList<MahjongTile>()
         // 牌のデータが配列なので、ArrayListに格納してから送る
-        selectedUpTiles.add(selectedTile)
+        selectedTile?.let { selectedUpTiles.add(it) }
 
         intent.putParcelableArrayListExtra("selectedUpTile", ArrayList(selectedUpTiles))
 
