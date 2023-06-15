@@ -7,6 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -30,7 +31,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
 
     private val selectedTiles = mutableListOf<MahjongTile>()
-
 
     private var isSyuntsuButtonPressed = false
     private var isKoutsuButtonPressed = false
@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
         val itemWidth = resources.getDimensionPixelSize(R.dimen.item_width)
 
         val layoutManager = GridLayoutManager(this, initialSpanCount)
-        val spanSizeLookup = object : GridLayoutManager.SpanSizeLookup(){
+        val spanSizeLookup = object : GridLayoutManager.SpanSizeLookup() {
             override fun getSpanSize(position: Int): Int {
                 return if (position < handAdapter.itemCount) 1 else layoutManager.spanCount
             }
@@ -99,6 +99,8 @@ class MainActivity : AppCompatActivity() {
                 TiButtonState(tile)
             } else if (isAnkanButtonPressed || isMinkanButtonPressed) {
                 kanButtonState(tile)
+            } else if (selectedTiles.isEmpty()) {
+                headTileState(tile)
             }
         }
 
@@ -172,127 +174,174 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.nextButton.setOnClickListener {
-            val intent = Intent(this, SettingActivity::class.java)
-            intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
-            startActivity(intent)
+            if (selectedTiles.size in 14..18) {
+                val intent = Intent(this, SettingActivity::class.java)
+                intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
+                startActivity(intent)
+            } else {
+                Toast.makeText(applicationContext, "麻雀牌が正しく登録されていません", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.syuntsuButton.setOnClickListener {
-            // 順子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
-            isSyuntsuButtonPressed = !isSyuntsuButtonPressed
-            binding.koutsuButton.isChecked = false
-            binding.titoitsuButton.isChecked = false
-            binding.ponButton.isChecked = false
-            binding.tiButton.isChecked = false
-            binding.minkanButton.isChecked = false
-            binding.ankanButton.isChecked = false
-            isKoutsuButtonPressed = false
-            isTitoitsuButtonPressed = false
-            isPonButtonPressed = false
-            isTiButtonPressed = false
-            isMinkanButtonPressed = false
-            isAnkanButtonPressed = false
+            if (selectedTiles.isNotEmpty()) {
+                // 順子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
+                isSyuntsuButtonPressed = !isSyuntsuButtonPressed
+                binding.koutsuButton.isChecked = false
+                binding.titoitsuButton.isChecked = false
+                binding.ponButton.isChecked = false
+                binding.tiButton.isChecked = false
+                binding.minkanButton.isChecked = false
+                binding.ankanButton.isChecked = false
+                isKoutsuButtonPressed = false
+                isTitoitsuButtonPressed = false
+                isPonButtonPressed = false
+                isTiButtonPressed = false
+                isMinkanButtonPressed = false
+                isAnkanButtonPressed = false
+            } else {
+                binding.syuntsuButton.isChecked = false
+                isSyuntsuButtonPressed = false
+                Toast.makeText(applicationContext, "頭の牌が未選択です。", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.koutsuButton.setOnClickListener {
-            // 刻子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
-            isKoutsuButtonPressed = !isKoutsuButtonPressed
-            binding.syuntsuButton.isChecked = false
-            binding.titoitsuButton.isChecked = false
-            binding.ponButton.isChecked = false
-            binding.tiButton.isChecked = false
-            binding.minkanButton.isChecked = false
-            binding.ankanButton.isChecked = false
-            isSyuntsuButtonPressed = false
-            isTitoitsuButtonPressed = false
-            isPonButtonPressed = false
-            isTiButtonPressed = false
-            isMinkanButtonPressed = false
-            isAnkanButtonPressed = false
+            if (selectedTiles.isNotEmpty()) {
+                // 刻子ボタンが押された場合、モードを変更(例.trueならばfalseへ変更)
+                isKoutsuButtonPressed = !isKoutsuButtonPressed
+                binding.syuntsuButton.isChecked = false
+                binding.titoitsuButton.isChecked = false
+                binding.ponButton.isChecked = false
+                binding.tiButton.isChecked = false
+                binding.minkanButton.isChecked = false
+                binding.ankanButton.isChecked = false
+                isSyuntsuButtonPressed = false
+                isTitoitsuButtonPressed = false
+                isPonButtonPressed = false
+                isTiButtonPressed = false
+                isMinkanButtonPressed = false
+                isAnkanButtonPressed = false
+            } else {
+                binding.koutsuButton.isChecked = false
+                isKoutsuButtonPressed = false
+                Toast.makeText(applicationContext, "頭の牌が未選択です。", Toast.LENGTH_SHORT).show()
+            }
+
         }
 
         binding.titoitsuButton.setOnClickListener {
-            isTitoitsuButtonPressed = !isTitoitsuButtonPressed
-            binding.syuntsuButton.isChecked = false
-            binding.koutsuButton.isChecked = false
-            binding.ponButton.isChecked = false
-            binding.tiButton.isChecked = false
-            binding.minkanButton.isChecked = false
-            binding.ankanButton.isChecked = false
-            isSyuntsuButtonPressed = false
-            isKoutsuButtonPressed = false
-            isPonButtonPressed = false
-            isTiButtonPressed = false
-            isMinkanButtonPressed = false
-            isAnkanButtonPressed = false
+            if (selectedTiles.isNotEmpty()) {
+                isTitoitsuButtonPressed = !isTitoitsuButtonPressed
+                binding.syuntsuButton.isChecked = false
+                binding.koutsuButton.isChecked = false
+                binding.ponButton.isChecked = false
+                binding.tiButton.isChecked = false
+                binding.minkanButton.isChecked = false
+                binding.ankanButton.isChecked = false
+                isSyuntsuButtonPressed = false
+                isKoutsuButtonPressed = false
+                isPonButtonPressed = false
+                isTiButtonPressed = false
+                isMinkanButtonPressed = false
+                isAnkanButtonPressed = false
+            } else {
+                binding.titoitsuButton.isChecked = false
+                isTitoitsuButtonPressed = false
+                Toast.makeText(applicationContext, "頭の牌が未選択です。", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.ponButton.setOnClickListener {
-            isPonButtonPressed = !isPonButtonPressed
-            binding.syuntsuButton.isChecked = false
-            binding.koutsuButton.isChecked = false
-            binding.titoitsuButton.isChecked = false
-            binding.tiButton.isChecked = false
-            binding.minkanButton.isChecked = false
-            binding.ankanButton.isChecked = false
-            isSyuntsuButtonPressed = false
-            isKoutsuButtonPressed = false
-            isTitoitsuButtonPressed = false
-            isTiButtonPressed = false
-            isMinkanButtonPressed = false
-            isAnkanButtonPressed = false
+            if (selectedTiles.isNotEmpty()) {
+                isPonButtonPressed = !isPonButtonPressed
+                binding.syuntsuButton.isChecked = false
+                binding.koutsuButton.isChecked = false
+                binding.titoitsuButton.isChecked = false
+                binding.tiButton.isChecked = false
+                binding.minkanButton.isChecked = false
+                binding.ankanButton.isChecked = false
+                isSyuntsuButtonPressed = false
+                isKoutsuButtonPressed = false
+                isTitoitsuButtonPressed = false
+                isTiButtonPressed = false
+                isMinkanButtonPressed = false
+                isAnkanButtonPressed = false
+            } else {
+                binding.ponButton.isChecked = false
+                isPonButtonPressed = false
+                Toast.makeText(applicationContext, "頭の牌が未選択です。", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.tiButton.setOnClickListener {
-            isTiButtonPressed = !isTiButtonPressed
-            binding.syuntsuButton.isChecked = false
-            binding.koutsuButton.isChecked = false
-            binding.titoitsuButton.isChecked = false
-            binding.ponButton.isChecked = false
-            binding.minkanButton.isChecked = false
-            binding.ankanButton.isChecked = false
-            isSyuntsuButtonPressed = false
-            isKoutsuButtonPressed = false
-            isTitoitsuButtonPressed = false
-            isPonButtonPressed = false
-            isMinkanButtonPressed = false
-            isAnkanButtonPressed = false
+            if (selectedTiles.isNotEmpty()) {
+                isTiButtonPressed = !isTiButtonPressed
+                binding.syuntsuButton.isChecked = false
+                binding.koutsuButton.isChecked = false
+                binding.titoitsuButton.isChecked = false
+                binding.ponButton.isChecked = false
+                binding.minkanButton.isChecked = false
+                binding.ankanButton.isChecked = false
+                isSyuntsuButtonPressed = false
+                isKoutsuButtonPressed = false
+                isTitoitsuButtonPressed = false
+                isPonButtonPressed = false
+                isMinkanButtonPressed = false
+                isAnkanButtonPressed = false
+            } else {
+                binding.tiButton.isChecked = false
+                isTiButtonPressed = false
+                Toast.makeText(applicationContext, "頭の牌が未選択です。", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.ankanButton.setOnClickListener {
-            isAnkanButtonPressed = !isAnkanButtonPressed
-            binding.syuntsuButton.isChecked = false
-            binding.koutsuButton.isChecked = false
-            binding.titoitsuButton.isChecked = false
-            binding.ponButton.isChecked = false
-            binding.tiButton.isChecked = false
-            binding.minkanButton.isChecked = false
-            isSyuntsuButtonPressed = false
-            isKoutsuButtonPressed = false
-            isTitoitsuButtonPressed = false
-            isPonButtonPressed = false
-            isTiButtonPressed = false
-            isMinkanButtonPressed = false
+            if (selectedTiles.isNotEmpty()) {
+                isAnkanButtonPressed = !isAnkanButtonPressed
+                binding.syuntsuButton.isChecked = false
+                binding.koutsuButton.isChecked = false
+                binding.titoitsuButton.isChecked = false
+                binding.ponButton.isChecked = false
+                binding.tiButton.isChecked = false
+                binding.minkanButton.isChecked = false
+                isSyuntsuButtonPressed = false
+                isKoutsuButtonPressed = false
+                isTitoitsuButtonPressed = false
+                isPonButtonPressed = false
+                isTiButtonPressed = false
+                isMinkanButtonPressed = false
+            } else {
+                binding.ankanButton.isChecked = false
+                isAnkanButtonPressed = false
+                Toast.makeText(applicationContext, "頭の牌が未選択です。", Toast.LENGTH_SHORT).show()
+            }
         }
 
         binding.minkanButton.setOnClickListener {
-            isMinkanButtonPressed = !isMinkanButtonPressed
-            binding.syuntsuButton.isChecked = false
-            binding.koutsuButton.isChecked = false
-            binding.titoitsuButton.isChecked = false
-            binding.ponButton.isChecked = false
-            binding.tiButton.isChecked = false
-            binding.ankanButton.isChecked = false
-            isSyuntsuButtonPressed = false
-            isKoutsuButtonPressed = false
-            isTitoitsuButtonPressed = false
-            isPonButtonPressed = false
-            isTiButtonPressed = false
-            isAnkanButtonPressed = false
+            if (selectedTiles.isNotEmpty()) {
+                isMinkanButtonPressed = !isMinkanButtonPressed
+                binding.syuntsuButton.isChecked = false
+                binding.koutsuButton.isChecked = false
+                binding.titoitsuButton.isChecked = false
+                binding.ponButton.isChecked = false
+                binding.tiButton.isChecked = false
+                binding.ankanButton.isChecked = false
+                isSyuntsuButtonPressed = false
+                isKoutsuButtonPressed = false
+                isTitoitsuButtonPressed = false
+                isPonButtonPressed = false
+                isTiButtonPressed = false
+                isAnkanButtonPressed = false
+            } else {
+                binding.minkanButton.isChecked = false
+                isMinkanButtonPressed = false
+                Toast.makeText(applicationContext, "頭の牌が未選択です。", Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
-    private fun showCustomDialog(){
+    private fun showCustomDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = layoutInflater
 
@@ -380,13 +429,16 @@ class MainActivity : AppCompatActivity() {
         if (isAnkanButtonPressed) {
             selectedTiles.add(tile)
 
-            val backTile = MahjongTile(tile.number, tile.tileType, true, true, R.drawable.tiles_back)
+            val backTile =
+                MahjongTile(tile.number, tile.tileType, true, true, R.drawable.tiles_back)
             selectedTiles.add(backTile)
 
-            val backTile2 = MahjongTile(tile.number, tile.tileType, true, true, R.drawable.tiles_back)
+            val backTile2 =
+                MahjongTile(tile.number, tile.tileType, true, true, R.drawable.tiles_back)
             selectedTiles.add(backTile2)
 
-            val revealedTile = MahjongTile(tile.number, tile.tileType, false, false, tile.imageResourceId)
+            val revealedTile =
+                MahjongTile(tile.number, tile.tileType, false, false, tile.imageResourceId)
             selectedTiles.add(revealedTile)
 
             val layoutManager = recyclerViewHand.layoutManager as GridLayoutManager
@@ -403,7 +455,24 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    private fun headTileState(tile: MahjongTile) {
+        if (selectedTiles.isEmpty()) {
+            val tilesToAddForTappedTile = getSequentialTiles(tile.tileType, tile.number)
+            selectedTiles.addAll(tilesToAddForTappedTile)
+            handAdapter.notifyDataSetChanged()
 
+        } else {
+            selectedTiles.add(tile)
+            handAdapter.notifyDataSetChanged()
+        }
+    }
+
+
+    /**
+     * 麻雀牌の画像を取得する処理
+     * @param tileType 麻雀牌の種類
+     * @return List<MahjongTile> 麻雀牌の一覧を返す
+     */
     private fun getTiles(tileType: String): List<MahjongTile> {
         val tileList = mutableListOf<MahjongTile>()
         val resourcePrefix = "tiles_"
@@ -479,16 +548,16 @@ class MainActivity : AppCompatActivity() {
                 val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
                 tileList.add(tile)
             }
+        } else if (selectedTiles.isEmpty()) {
+            for (i in 0..1) {
+                val resourceName = resourcePrefix + tileType + "_" + tileNumber.toString()
+                val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
+                val tile = MahjongTile(tileNumber, tileType, false, false, resourceId)
+                tileList.add(tile)
+            }
         }
         return tileList
 
-// 槓子の処理はこれでOK！
-/*for (i in 0..3){
-        val resourceName = resourcePrefix + tileType + "_" + selectNumber.toString()
-        val resourceId = resources.getIdentifier(resourceName, "drawable", packageName)
-        val tile = MahjongTile(tileType, selectNumber, resourceId)
-        tileList.add(tile)
-    }*/
     }
 }
 
