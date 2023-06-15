@@ -83,7 +83,21 @@ class CalculateActivity : AppCompatActivity() {
             }
         }
 
-        val scoreResult = ScoreCalculator(selectedTiles).calculateScore(isKid, isRon, isDoraCount, isReach)
+        val scoreResult = ScoreCalculator(selectedTiles)
+            .calculateScore(
+                isKid,
+                isRon,
+                isDoraCount,
+                isReach,
+                isDoubleReach,
+                isOne,
+                isChankan,
+                isRinshan,
+                isHoutei,
+                isHaitei,
+                isTenhou,
+                isTihou
+            )
         val resultText = formatResult(scoreResult, isKid)
         textViewResult.text = resultText
     }

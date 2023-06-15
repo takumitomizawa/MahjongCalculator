@@ -2,45 +2,82 @@ package jp.techacademy.mahjongcalculator
 
 class ScoreCalculator(private val tiles: List<MahjongTile>) {
 
-    fun calculateScore(isKid: Boolean, isTsumo: Boolean, doraCount: Int, isReach: Boolean): CalculateActivity.ScoreResult {
+    fun calculateScore(
+        isKid: Boolean,
+        isRon: Boolean,
+        doraCount: Int,
+        isReach: Boolean,
+        isDoubleReach: Boolean,
+        isOne: Boolean,
+        isChankan: Boolean,
+        isRinshan: Boolean,
+        isHoutei: Boolean,
+        isHaitei: Boolean,
+        isTenhou: Boolean,
+        isTihou: Boolean
+    ): CalculateActivity.ScoreResult {
         val selectedYaku = SelectedYaku(tiles)
         val yakuList = mutableListOf<String>()
 
         if (selectedYaku.isTitoitsu()) {
             yakuList.add(YakuList.TITOITSU)
-            return calculateTitoitsuScore(isKid, isTsumo, doraCount)
-        } else if (selectedYaku.isPinfu()){
+            return calculateTitoitsuScore(
+                CalculationParams(
+                    isKid,
+                    isRon,
+                    doraCount,
+                    isReach,
+                    isDoubleReach,
+                    isOne,
+                    isChankan,
+                    isRinshan,
+                    isHoutei,
+                    isHaitei,
+                    isTenhou,
+                    isTihou
+                )
+            )
+        } else if (selectedYaku.isPinfu()) {
             yakuList.add(YakuList.PINFU)
-            return calculatePinfuScore(isKid, isTsumo, doraCount)
+            return calculatePinfuScore(isKid, isRon, doraCount)
         }
         return CalculateActivity.ScoreResult(0, 0, 0)
     }
-    private fun calculateTitoitsuScore(isKid: Boolean, isTsumo: Boolean, doraCount: Int): CalculateActivity.ScoreResult {
+
+    private fun calculateTitoitsuScore(params: CalculationParams): CalculateActivity.ScoreResult {
         // 七対子の場合の点数を計算
         val fu = 25
         var han = 2
 
         // ドラの数に応じて翻数を調整する
-        han += doraCount
+        han += params.doraCount
+
+        if (!params.isRon) han += 1
+        if (params.isReach) han += 1
+        if (params.isDoubleReach) han += 2
 
         val basePoint = when (han) {
             2 -> {
-                if (!isKid) 2400 else 1600
+                if (!params.isKid) 2400 else 1600
             }
             3 -> {
-                if (!isKid) 4800 else 3200
+                if (!params.isKid) 4800 else 3200
             }
             4 -> {
-                if (!isKid) 9600 else 6400
+                if (!params.isKid) 9600 else 6400
             }
             else -> {
-                if (!isKid) 12000 else 8000
+                if (!params.isKid) 12000 else 8000
             }
         }
         return CalculateActivity.ScoreResult(fu, han, basePoint)
     }
 
-    private fun calculatePinfuScore(isKid: Boolean, isRon: Boolean, doraCount: Int): CalculateActivity.ScoreResult {
+    private fun calculatePinfuScore(
+        isKid: Boolean,
+        isRon: Boolean,
+        doraCount: Int
+    ): CalculateActivity.ScoreResult {
 
         // 平和は1飜
         var han = 1
@@ -49,7 +86,7 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         han += doraCount
 
         // ロンで30符だった時
-        return if (isRon){
+        return if (isRon) {
             val fu = 30
             val baseRonPoint = when (han) {
                 1 -> {
@@ -91,8 +128,18 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         }
     }
 
-    private fun checkReach(): Boolean{
-        var isReach = true
-        return isReach
-    }
+    data class CalculationParams(
+        var isKid: Boolean = false,
+        var isRon: Boolean = false,
+        var doraCount: Int,
+        var isReach: Boolean = false,
+        var isDoubleReach: Boolean = false,
+        var isOne: Boolean = false,
+        var isChankan: Boolean = false,
+        var isRinshan: Boolean = false,
+        var isHoutei: Boolean = false,
+        var isHaitei: Boolean = false,
+        var isTenhou: Boolean = false,
+        var isTihou: Boolean = false
+    )
 }
