@@ -15,6 +15,8 @@ import jp.techacademy.mahjongcalculator.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
+    // テスト用のコメントです
+
     private lateinit var recyclerViewHand: RecyclerView
     private lateinit var recyclerViewManzu: RecyclerView
     private lateinit var recyclerViewPinzu: RecyclerView
