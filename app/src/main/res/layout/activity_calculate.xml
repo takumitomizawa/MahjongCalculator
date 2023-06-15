@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
-        android:text="親30符8飜 倍満 24000点"
+        android:text="点数"
         android:textColor="#FFFFFF"
         android:textSize="30dp"
         app:layout_constraintEnd_toEndOf="parent"

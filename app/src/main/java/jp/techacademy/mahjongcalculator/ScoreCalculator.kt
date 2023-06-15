@@ -18,28 +18,27 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
     ): CalculateActivity.ScoreResult {
         val selectedYaku = SelectedYaku(tiles)
         val yakuList = mutableListOf<String>()
+        val calculateParams = CalculationParams(
+            isKid,
+            isRon,
+            doraCount,
+            isReach,
+            isDoubleReach,
+            isOne,
+            isChankan,
+            isRinshan,
+            isHoutei,
+            isHaitei,
+            isTenhou,
+            isTihou
+        )
 
         if (selectedYaku.isTitoitsu()) {
             yakuList.add(YakuList.TITOITSU)
-            return calculateTitoitsuScore(
-                CalculationParams(
-                    isKid,
-                    isRon,
-                    doraCount,
-                    isReach,
-                    isDoubleReach,
-                    isOne,
-                    isChankan,
-                    isRinshan,
-                    isHoutei,
-                    isHaitei,
-                    isTenhou,
-                    isTihou
-                )
-            )
+            return calculateTitoitsuScore(calculateParams)
         } else if (selectedYaku.isPinfu()) {
             yakuList.add(YakuList.PINFU)
-            return calculatePinfuScore(isKid, isRon, doraCount)
+            return calculatePinfuScore(calculateParams)
         }
         return CalculateActivity.ScoreResult(0, 0, 0)
     }
@@ -73,36 +72,32 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         return CalculateActivity.ScoreResult(fu, han, basePoint)
     }
 
-    private fun calculatePinfuScore(
-        isKid: Boolean,
-        isRon: Boolean,
-        doraCount: Int
-    ): CalculateActivity.ScoreResult {
+    private fun calculatePinfuScore(params: CalculationParams): CalculateActivity.ScoreResult {
 
         // 平和は1飜
         var han = 1
 
         // ドラの数に応じて翻数を調整する
-        han += doraCount
+        han += params.doraCount
 
         // ロンで30符だった時
-        return if (isRon) {
+        return if (params.isRon) {
             val fu = 30
             val baseRonPoint = when (han) {
                 1 -> {
-                    if (!isKid) 1500 else 1000
+                    if (!params.isKid) 1500 else 1000
                 }
                 2 -> {
-                    if (!isKid) 2900 else 2000
+                    if (!params.isKid) 2900 else 2000
                 }
                 3 -> {
-                    if (!isKid) 5800 else 3900
+                    if (!params.isKid) 5800 else 3900
                 }
                 4 -> {
-                    if (!isKid) 11600 else 7700
+                    if (!params.isKid) 11600 else 7700
                 }
                 else -> {
-                    if (!isKid) 12000 else 8000
+                    if (!params.isKid) 12000 else 8000
                 }
             }
             CalculateActivity.ScoreResult(fu, han, baseRonPoint)
@@ -112,16 +107,16 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
             han++
             val baseTsumoPoint = when (han) {
                 2 -> {
-                    if (!isKid) 2000 else 1300
+                    if (!params.isKid) 2000 else 1300
                 }
                 3 -> {
-                    if (!isKid) 3900 else 2600
+                    if (!params.isKid) 3900 else 2600
                 }
                 4 -> {
-                    if (!isKid) 7700 else 5200
+                    if (!params.isKid) 7700 else 5200
                 }
                 else -> {
-                    if (!isKid) 12000 else 8000
+                    if (!params.isKid) 12000 else 8000
                 }
             }
             CalculateActivity.ScoreResult(fu, han, baseTsumoPoint)

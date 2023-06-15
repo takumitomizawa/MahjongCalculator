@@ -65,6 +65,9 @@ class CalculateActivity : AppCompatActivity() {
         if (!isRon){
             yakuList.add(YakuList.TSUMO)
         }
+        if (isDoraCount > 0){
+            yakuList.add("ドラ$isDoraCount：${isDoraCount}翻")
+        }
 
         val linearLayoutColumn1 = binding.yakuColumn1
         val linearLayoutColumn2 = binding.yakuColumn2
@@ -104,7 +107,6 @@ class CalculateActivity : AppCompatActivity() {
 
     private fun formatResult(scoreResult: ScoreResult, isKid: Boolean): String {
         val role = if (!isKid) "親" else "子"
-        val isReach = intent.getBooleanExtra("isReach", false)
         return "$role${scoreResult.fu}符 ${scoreResult.han}翻 ${scoreResult.points}点"
     }
 

@@ -45,4 +45,14 @@ class SelectedYaku(private val tiles: List<MahjongTile>) {
 
         return false
     }
+
+    fun isTanyao(): Boolean{
+        // 字牌と1,9牌が含まれる場合はタンヤオではない
+        for (tile in tiles){
+            if (tile.tileType == "ji" || tile.number == 1 || tile.number == 9){
+               return false
+            }
+        }
+        return true
+    }
 }
