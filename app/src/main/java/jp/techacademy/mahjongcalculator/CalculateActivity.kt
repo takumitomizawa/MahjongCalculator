@@ -110,5 +110,6 @@ class CalculateActivity : AppCompatActivity() {
         return "$role${scoreResult.fu}符 ${scoreResult.han}翻 ${scoreResult.points}点"
     }
 
+
     data class ScoreResult(val fu: Int, var han: Int, val points: Int)
 }

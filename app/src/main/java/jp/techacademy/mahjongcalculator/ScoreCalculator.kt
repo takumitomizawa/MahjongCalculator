@@ -39,6 +39,8 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         } else if (selectedYaku.isPinfu()) {
             yakuList.add(YakuList.PINFU)
             return calculatePinfuScore(calculateParams)
+        } else {
+            return calculateOtherScore(calculateParams)
         }
         return CalculateActivity.ScoreResult(0, 0, 0)
     }
@@ -54,6 +56,14 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         if (!params.isRon) han += 1
         if (params.isReach) han += 1
         if (params.isDoubleReach) han += 2
+        if (params.isOne) han += 1
+        if (params.isChankan) han += 1
+        if (params.isRinshan) han += 1
+        if (params.isHoutei) han += 1
+        if (params.isHaitei) han += 1
+        if (params.isTenhou) han += 13
+        if (params.isTihou) han += 13
+
 
         val basePoint = when (han) {
             2 -> {
@@ -80,6 +90,17 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         // ドラの数に応じて翻数を調整する
         han += params.doraCount
 
+        if (!params.isRon) han += 1
+        if (params.isReach) han += 1
+        if (params.isDoubleReach) han += 2
+        if (params.isOne) han += 1
+        if (params.isChankan) han += 1
+        if (params.isRinshan) han += 1
+        if (params.isHoutei) han += 1
+        if (params.isHaitei) han += 1
+        if (params.isTenhou) han += 13
+        if (params.isTihou) han += 13
+
         // ロンで30符だった時
         return if (params.isRon) {
             val fu = 30
@@ -103,8 +124,6 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
             CalculateActivity.ScoreResult(fu, han, baseRonPoint)
         } else {
             val fu = 20
-            // 平和のツモの時は面前が確定しているので1飜プラス
-            han++
             val baseTsumoPoint = when (han) {
                 2 -> {
                     if (!params.isKid) 2000 else 1300
@@ -121,6 +140,89 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
             }
             CalculateActivity.ScoreResult(fu, han, baseTsumoPoint)
         }
+    }
+
+    private fun calculateOtherScore(params: CalculationParams): CalculateActivity.ScoreResult {
+        // 手牌を判定する
+        var fu = 20
+        if (params.isRon) {
+            fu += 10
+        } else {
+            fu += 2
+        }
+        if (tiles[0].tileType == "ji"){
+            fu += 2
+        }
+        if (tiles[3].number == tiles[4].number){
+            if ((tiles[3].number == 1 || tiles[3].number == 9) || tiles[3].tileType == "ji"){
+                fu += 8
+            } else fu += 4
+        }
+        if (tiles[6].number == tiles[7].number){
+            if ((tiles[6].number == 1 || tiles[6].number == 9) || tiles[6].tileType == "ji"){
+                fu += 8
+            } else fu += 4
+        }
+        if (tiles[9].number == tiles[10].number){
+            if ((tiles[9].number == 1 || tiles[9].number == 9) || tiles[9].tileType == "ji"){
+                fu += 8
+            } else fu += 4
+        }
+        if (tiles[12].number == tiles[13].number){
+            if ((tiles[12].number == 1 || tiles[12].number == 9) || tiles[12].tileType == "ji"){
+                fu += 8
+            } else fu += 4
+        }
+        /*if (tiles[3].number == tiles[6].number){
+            if ((tiles[3].isBack || tiles[6].isBack) || (tiles[3].number == 1 || tiles[3].number == 9) || tiles[3].tileType == "ji"){
+                fu += 32
+            } else {
+                fu += 16
+            }
+        }
+        if (tiles[7].number == tiles[10].number){
+            if ((tiles[7].isBack || tiles[10].isBack) || (tiles[7].number == 1 || tiles[7].number == 9) || tiles[7].tileType == "ji"){
+                fu += 32
+            } else {
+                fu += 16
+            }
+        }
+        if (tiles[11].number == tiles[14].number){
+            if ((tiles[11].isBack || tiles[14].isBack) || (tiles[11].number == 1 || tiles[11].number == 9) || tiles[11].tileType == "ji"){
+                fu += 32
+            } else {
+                fu += 16
+            }
+        }*/
+
+        var calculatedFu = if((fu % 10) != 0){
+             fu - (fu % 10) + 10
+        } else {
+            fu
+        }
+
+        // 飜数を判断する
+        var han = 0
+
+        han += params.doraCount
+
+        if (!params.isRon) han += 1
+        if (params.isReach) han += 1
+        if (params.isDoubleReach) han += 2
+        if (params.isOne) han += 1
+        if (params.isChankan) han += 1
+        if (params.isRinshan) han += 1
+        if (params.isHoutei) han += 1
+        if (params.isHaitei) han += 1
+        if (params.isTenhou) han += 13
+        if (params.isTihou) han += 13
+
+
+        // 得た飜数と符数を下にScoreTable.ktを参照する
+        val baseOtherPoint = 0
+
+        // 得た対応する点数を取得して、CalculateActivity.ktのScoreResultに送る
+        return CalculateActivity.ScoreResult(calculatedFu, han, baseOtherPoint)
     }
 
     data class CalculationParams(

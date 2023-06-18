@@ -119,6 +119,8 @@ class MainActivity : AppCompatActivity() {
                 kanButtonState(tile)
             } else if (isMinkanButtonPressed) {
                 kanButtonState(tile)
+            } else if (selectedTiles.isEmpty()) {
+                headTileState(tile)
             }
         }
 
@@ -137,6 +139,8 @@ class MainActivity : AppCompatActivity() {
                 kanButtonState(tile)
             } else if (isMinkanButtonPressed) {
                 kanButtonState(tile)
+            } else if (selectedTiles.isEmpty()) {
+                headTileState(tile)
             }
         }
 
@@ -149,6 +153,8 @@ class MainActivity : AppCompatActivity() {
                 kanButtonState(tile)
             } else if (isMinkanButtonPressed) {
                 kanButtonState(tile)
+            } else if (selectedTiles.isEmpty()) {
+                headTileState(tile)
             }
         }
 
