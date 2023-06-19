@@ -219,7 +219,7 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
 
 
         // 得た飜数と符数を下にScoreTable.ktを参照する
-        val baseOtherPoint = 0
+        val baseOtherPoint = ScoreTable.getBaseOtherPoint(calculatedFu, han, params.isKid)
 
         // 得た対応する点数を取得して、CalculateActivity.ktのScoreResultに送る
         return CalculateActivity.ScoreResult(calculatedFu, han, baseOtherPoint)
