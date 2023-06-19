@@ -33,16 +33,16 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
             isTihou
         )
 
-        if (selectedYaku.isTitoitsu()) {
+        return if (selectedYaku.isTitoitsu()) {
             yakuList.add(YakuList.TITOITSU)
-            return calculateTitoitsuScore(calculateParams)
+            calculateTitoitsuScore(calculateParams)
         } else if (selectedYaku.isPinfu()) {
             yakuList.add(YakuList.PINFU)
-            return calculatePinfuScore(calculateParams)
+            calculatePinfuScore(calculateParams)
         } else {
-            return calculateOtherScore(calculateParams)
+            calculateOtherScore(calculateParams)
         }
-        return CalculateActivity.ScoreResult(0, 0, 0)
+        //return CalculateActivity.ScoreResult(0, 0, 0)
     }
 
     private fun calculateTitoitsuScore(params: CalculationParams): CalculateActivity.ScoreResult {

@@ -14,8 +14,6 @@ class CalculateActivity : AppCompatActivity() {
     private lateinit var recyclerViewResultHand: RecyclerView
     private lateinit var resultAdapter: TileAdapter
     private lateinit var binding: ActivityCalculateBinding
-    private lateinit var parentChangeSwitch: Switch
-    private lateinit var goalChangeSwitch: Switch
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -109,7 +107,6 @@ class CalculateActivity : AppCompatActivity() {
         val role = if (!isKid) "親" else "子"
         return "$role${scoreResult.fu}符 ${scoreResult.han}翻 ${scoreResult.points}点"
     }
-
 
     data class ScoreResult(val fu: Int, var han: Int, val points: Int)
 }
