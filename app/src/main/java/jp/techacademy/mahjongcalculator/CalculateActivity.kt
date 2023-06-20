@@ -1,5 +1,6 @@
 package jp.techacademy.mahjongcalculator
 
+import android.content.Intent
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -31,6 +32,16 @@ class CalculateActivity : AppCompatActivity() {
         val isKid = intent.getBooleanExtra("parentCheck", false)
         val isRon = intent.getBooleanExtra("goalCheck", false)
         val isDoraCount = intent.getIntExtra("doraCount", 0)
+
+        binding.backToSettingButton.setOnClickListener{
+            finish()
+        }
+
+        binding.backToHomeButton.setOnClickListener{
+            val intent = Intent(this, MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            startActivity(intent)
+        }
 
         // SettingActivity.ktからCheckBoxの情報を取得
         val isReach = intent.getBooleanExtra("isReach", false)

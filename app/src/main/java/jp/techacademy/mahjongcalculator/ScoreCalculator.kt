@@ -42,7 +42,6 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         } else {
             calculateOtherScore(calculateParams)
         }
-        //return CalculateActivity.ScoreResult(0, 0, 0)
     }
 
     private fun calculateTitoitsuScore(params: CalculationParams): CalculateActivity.ScoreResult {

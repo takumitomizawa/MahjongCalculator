@@ -58,14 +58,18 @@ class SettingActivity : AppCompatActivity() {
                 binding.checkBoxOne.isEnabled = true
             } else if (!binding.checkBoxDoubleReach.isChecked) {
                 binding.checkBoxOne.isEnabled = false
+                binding.checkBoxOne.isChecked = false
             }
         }
         binding.checkBoxDoubleReach.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 binding.checkBoxReach.isChecked = false
                 binding.checkBoxOne.isEnabled = true
+                binding.checkBoxHaitei.isEnabled = false
             } else if (!binding.checkBoxReach.isChecked) {
                 binding.checkBoxOne.isEnabled = false
+                binding.checkBoxOne.isChecked = false
+                binding.checkBoxHaitei.isEnabled = true
             }
         }
 
@@ -113,6 +117,7 @@ class SettingActivity : AppCompatActivity() {
         }
 
         binding.checkBoxChankan.setOnClickListener {
+            binding.checkBoxHaitei.isEnabled = !binding.checkBoxChankan.isChecked
             binding.checkBoxTihou.isChecked = false
             binding.checkBoxTenhou.isChecked = false
             binding.checkBoxHoutei.isChecked = false

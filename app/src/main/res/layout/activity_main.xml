@@ -70,9 +70,9 @@
         android:text="リセット"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
+
         android:layout_marginStart="30dp"
-        app:layout_constraintTop_toTopOf="@+id/recyclerViewManzu"
+        app:layout_constraintTop_toTopOf="@+id/ponButton"
         app:layout_constraintStart_toEndOf="@id/recyclerViewManzu"
         />
 
@@ -122,9 +122,9 @@
         android:textOff="七対子"
         android:layout_width="wrap_content"
         android:layout_height="65dp"
-        android:layout_marginTop="10dp"
         android:layout_marginStart="30dp"
-        app:layout_constraintTop_toBottomOf="@+id/koutsuButton"
+        android:layout_marginBottom="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
         android:background="@drawable/toggle_button"
         />
@@ -192,7 +192,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginStart="160dp"
-        app:layout_constraintTop_toBottomOf="@+id/ankanButton"
+        app:layout_constraintBottom_toBottomOf="@+id/titoitsuButton"
         app:layout_constraintStart_toEndOf="@id/recyclerViewPinzu"
         />
 

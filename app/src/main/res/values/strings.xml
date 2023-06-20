@@ -6,4 +6,8 @@
     <string name="main_key_pinzu">pinzu</string>
     <string name="main_key_souzu">souzu</string>
     <string name="main_key_ji">ji</string>
+    <string name="lend">麻雀牌の画像をお借りいたしました。</string>
+    <string name="company">麻雀豆腐　様</string>
+    <string name="back_to_title">タイトルへ戻る</string>
+    <string name="hyperlink">https://majandofu.com/mahjong-images</string>
 </resources>
