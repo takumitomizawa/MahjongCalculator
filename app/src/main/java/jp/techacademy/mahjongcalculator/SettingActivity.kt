@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import jp.techacademy.mahjongcalculator.databinding.ActivitySettingBinding
+import kotlin.math.round
 
 class SettingActivity : AppCompatActivity() {
 
@@ -28,9 +29,12 @@ class SettingActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         recyclerViewSettingHand = binding.recyclerViewSettingHand
-        recyclerViewSettingHand.layoutManager = GridLayoutManager(this, 14)
 
         val selectedTiles = intent.getParcelableArrayListExtra<MahjongTile>("selectedTiles")
+        if (selectedTiles != null) {
+            recyclerViewSettingHand.layoutManager = GridLayoutManager(this, selectedTiles.size)
+        }
+
         settingAdapter = selectedTiles?.let { SettingTileAdapter(it) }!!
         binding.recyclerViewSettingHand.adapter = settingAdapter
 
@@ -256,6 +260,9 @@ class SettingActivity : AppCompatActivity() {
         // ドラの数を判断するために使う
         intent.putExtra("doraCount", doraCount)
 
+        // 本場を判断するために使う
+        intent.putExtra("roundCount", roundCount)
+
         // あがり牌が何か判断するために使う
         val selectedUpTiles = ArrayList<MahjongTile>()
         // 牌のデータが配列なので、ArrayListに格納してから送る
@@ -263,7 +270,7 @@ class SettingActivity : AppCompatActivity() {
 
         intent.putParcelableArrayListExtra("selectedUpTile", ArrayList(selectedUpTiles))
 
-        intent.putParcelableArrayListExtra("selectedTiles", ArrayList(selectedTiles))
+        intent.putParcelableArrayListExtra("selectedTiles", selectedTiles?.let { ArrayList(it) })
         startActivity(intent)
     }
 

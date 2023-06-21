@@ -1,5 +1,7 @@
 package jp.techacademy.mahjongcalculator
 
+import android.util.Log
+
 class ScoreCalculator(private val tiles: List<MahjongTile>) {
 
     fun calculateScore(
@@ -149,53 +151,18 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
         } else {
             fu += 2
         }
-        if (tiles[0].tileType == "ji"){
+        if (tiles[0].tileType == "ji") {
             fu += 2
         }
-        if (tiles[3].number == tiles[4].number){
-            if ((tiles[3].number == 1 || tiles[3].number == 9) || tiles[3].tileType == "ji"){
-                fu += 8
-            } else fu += 4
-        }
-        if (tiles[6].number == tiles[7].number){
-            if ((tiles[6].number == 1 || tiles[6].number == 9) || tiles[6].tileType == "ji"){
-                fu += 8
-            } else fu += 4
-        }
-        if (tiles[9].number == tiles[10].number){
-            if ((tiles[9].number == 1 || tiles[9].number == 9) || tiles[9].tileType == "ji"){
-                fu += 8
-            } else fu += 4
-        }
-        if (tiles[12].number == tiles[13].number){
-            if ((tiles[12].number == 1 || tiles[12].number == 9) || tiles[12].tileType == "ji"){
-                fu += 8
-            } else fu += 4
-        }
-        /*if (tiles[3].number == tiles[6].number){
-            if ((tiles[3].isBack || tiles[6].isBack) || (tiles[3].number == 1 || tiles[3].number == 9) || tiles[3].tileType == "ji"){
-                fu += 32
-            } else {
-                fu += 16
-            }
-        }
-        if (tiles[7].number == tiles[10].number){
-            if ((tiles[7].isBack || tiles[10].isBack) || (tiles[7].number == 1 || tiles[7].number == 9) || tiles[7].tileType == "ji"){
-                fu += 32
-            } else {
-                fu += 16
-            }
-        }
-        if (tiles[11].number == tiles[14].number){
-            if ((tiles[11].isBack || tiles[14].isBack) || (tiles[11].number == 1 || tiles[11].number == 9) || tiles[11].tileType == "ji"){
-                fu += 32
-            } else {
-                fu += 16
-            }
-        }*/
 
-        var calculatedFu = if((fu % 10) != 0){
-             fu - (fu % 10) + 10
+        // 手牌に槓子が存在するか判定して符数を加算する
+        fu += calculateFuForKan()
+
+        // 手牌に暗刻が存在するか判定して符数を加算する
+        fu += calculateFuForAnko()
+
+        var calculatedFu = if ((fu % 10) != 0) {
+            fu - (fu % 10) + 10
         } else {
             fu
         }
@@ -222,6 +189,63 @@ class ScoreCalculator(private val tiles: List<MahjongTile>) {
 
         // 得た対応する点数を取得して、CalculateActivity.ktのScoreResultに送る
         return CalculateActivity.ScoreResult(calculatedFu, han, baseOtherPoint)
+    }
+
+    private fun calculateFuForKan(): Int {
+        var fu = 0
+
+        var i = 2
+        while (i <= tiles.size - 4) {
+            val tile1 = tiles[i]
+            val tile2 = tiles[i + 1]
+            val tile3 = tiles[i + 2]
+            val tile4 = tiles[i + 3]
+
+            if (tile1.number == tile2.number && tile1.number == tile3.number && tile1.number == tile4.number
+                && tile1.tileType == tile2.tileType && tile1.tileType == tile3.tileType && tile1.tileType == tile4.tileType
+            ) {
+                fu += if (tile2.isRevealed && tile3.isRevealed) {
+                    if (tile1.tileType == "ji" || tile1.number == 1 || tile1.number == 9) {
+                        32
+                    } else {
+                        16
+                    }
+                } else {
+                    if (tile1.tileType == "ji" || tile1.number == 1 || tile1.number == 9) {
+                        16
+                    } else {
+                        8
+                    }
+                }
+            }
+            i++
+        }
+        return fu
+    }
+
+    private fun calculateFuForAnko(): Int {
+        var fu = 0
+
+        var i = 2
+        while (i <= tiles.size - 5) {
+            val tile1 = tiles[i]
+            val tile2 = tiles[i + 1]
+            val tile3 = tiles[i + 2]
+
+            if (tile1.number == tile2.number && tile1.number == tile3.number
+                && tile1.tileType == tile2.tileType && tile1.tileType == tile3.tileType
+            ) {
+                if (!tile1.isRevealed && !tile2.isRevealed && !tile3.isRevealed) {
+                    fu += if (tile1.tileType == "ji" || tile1.number == 1 || tile1.number == 9) {
+                        8
+                    } else {
+                        4
+                    }
+                }
+            }
+            i++
+        }
+        return fu
     }
 
     data class CalculationParams(
