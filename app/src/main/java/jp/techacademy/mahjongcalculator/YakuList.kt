@@ -7,5 +7,5 @@ object YakuList{
     const val PINFU = "ピンフ　　　：1翻"
     const val TSUMO = "メンゼンツモ：1翻"
     const val REACH = "リーチ　　　：1翻"
-    const val DOUBLEREACH = "ダブルリーチ　：2翻"
+    const val DOUBLEREACH = "ダブルリーチ：2翻"
 }

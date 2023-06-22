@@ -1,5 +1,6 @@
 package jp.techacademy.mahjongcalculator
 
+import android.annotation.SuppressLint
 import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.drawable.Drawable
@@ -347,6 +348,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @SuppressLint("MissingInflatedId")
     private fun showCustomDialog() {
         val dialogBuilder = AlertDialog.Builder(this)
         val inflater = layoutInflater
@@ -357,9 +359,11 @@ class MainActivity : AppCompatActivity() {
 
         // メッセージを表示するTextViewを取得
         val messageTextView = dialogView.findViewById<TextView>(R.id.messageTextView)
+        val messageTextView2 = dialogView.findViewById<TextView>(R.id.messageTextView2)
 
         // メッセージを設定
         messageTextView.text = "頭の牌を選択してください"
+        messageTextView2.text = "各補助ボタンをタップしてから牌を入力してください"
 
         // OKボタンを設定
         dialogBuilder.setPositiveButton("OK") { dialog: DialogInterface, _: Int ->

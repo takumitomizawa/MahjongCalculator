@@ -35,6 +35,16 @@
         android:layout_marginBottom="50dp"/>
 
     <Button
+        android:id="@+id/moveToTutorialButton"
+        android:text="操作方法説明"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginBottom="50dp"/>
+
+    <Button
         android:id="@+id/moveToCalculatorButton"
         android:text="牌入力＆計算開始"
         android:layout_width="wrap_content"

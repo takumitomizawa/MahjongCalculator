@@ -12,9 +12,13 @@
         android:theme="@style/Theme.MahjongCalculator"
         tools:targetApi="31">
         <activity
+            android:name=".Tutorial"
+            android:exported="false"
+            android:screenOrientation="landscape" />
+        <activity
             android:name=".Copyright"
             android:exported="false"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape" />
         <activity
             android:name=".MainActivity"
             android:exported="false"

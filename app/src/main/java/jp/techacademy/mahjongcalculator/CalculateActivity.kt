@@ -33,7 +33,6 @@ class CalculateActivity : AppCompatActivity() {
         }
         resultAdapter = selectedTiles?.let { TileAdapter(it) }!!
         binding.recyclerViewResultHand.adapter = resultAdapter
-
         var textViewResult = binding.textViewResult
         val isKid = intent.getBooleanExtra("parentCheck", false)
         val isRon = intent.getBooleanExtra("goalCheck", false)
@@ -63,6 +62,20 @@ class CalculateActivity : AppCompatActivity() {
 
         val yakuList = mutableListOf<String>()
         val selectedYaku = SelectedYaku(selectedTiles)
+        fun toFullWidthNumber(number: Int): String {
+            val fullWidthDigits = arrayOf("０", "１", "２", "３", "４", "５", "６", "７", "８", "９", "１０", "１１", "１２", "１３", "１４")
+            val numberStr = number.toString()
+            val stringBuilder = StringBuilder()
+            for (digit in numberStr) {
+                if (digit.isDigit()){
+                    val index = digit.toString().toInt()
+                    stringBuilder.append(fullWidthDigits[index])
+                } else {
+                    stringBuilder.append(digit)
+                }
+            }
+            return stringBuilder.toString()
+        }
 
         // 受け取った各CheckBoxの状態に応じて処理を行う
         if (isReach){
@@ -82,8 +95,10 @@ class CalculateActivity : AppCompatActivity() {
         }
         if (doraCount > 0){
             if (doraCount <= 9)
-            yakuList.add("ドラ$doraCount：${doraCount}翻")
+            yakuList.add("ドラ${toFullWidthNumber(doraCount)}　　　：${doraCount}翻")
         }
+
+
 
         val linearLayoutColumn1 = binding.yakuColumn1
         val linearLayoutColumn2 = binding.yakuColumn2

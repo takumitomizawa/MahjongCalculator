@@ -23,5 +23,10 @@ class TitleActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        binding.moveToTutorialButton.setOnClickListener{
+            val intent = Intent(this, Tutorial::class.java)
+            startActivity(intent)
+        }
+
     }
 }
